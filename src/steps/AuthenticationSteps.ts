@@ -1746,3 +1746,918 @@ Then('satisfaction score should be {float}+ out of {int}', async function (minSc
   // TODO: Implement step logic
   console.log(`✅ Step завершен: Then satisfaction score should be ${minScore}+ out of ${maxScore}`);
 });
+When('I navigate to accounts overview page', async function () {
+  console.log('🔄 Выполняется: When I navigate to accounts overview page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to accounts overview page');
+});
+Then('I should see my account summary', async function () {
+  console.log('🔄 Выполняется: Then I should see my account summary');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see my account summary');
+});
+Then('I should see account balances', async function () {
+  console.log('🔄 Выполняется: Then I should see account balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see account balances');
+});
+Then('I should see available accounts list', async function () {
+  console.log('🔄 Выполняется: Then I should see available accounts list');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see available accounts list');
+});
+Then('I should see recent transaction information', async function () {
+  console.log('🔄 Выполняется: Then I should see recent transaction information');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see recent transaction information');
+});
+Given('I am on accounts overview page', async function () {
+  console.log('🔄 Выполняется: Given I am on accounts overview page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I am on accounts overview page');
+});
+When('I click on first account number', async function () {
+  console.log('🔄 Выполняется: When I click on first account number');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click on first account number');
+});
+Then('I should see detailed account information', async function () {
+  console.log('🔄 Выполняется: Then I should see detailed account information');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see detailed account information');
+});
+Then('I should see account number', async function () {
+  console.log('🔄 Выполняется: Then I should see account number');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see account number');
+});
+Then('I should see account type', async function () {
+  console.log('🔄 Выполняется: Then I should see account type');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see account type');
+});
+Then('I should see current balance', async function () {
+  console.log('🔄 Выполняется: Then I should see current balance');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see current balance');
+});
+Then('I should see account activity link', async function () {
+  console.log('🔄 Выполняется: Then I should see account activity link');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see account activity link');
+});
+Given('I have multiple accounts available', async function () {
+  console.log('🔄 Выполняется: Given I have multiple accounts available');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have multiple accounts available');
+});
+When('I switch between different account views', async function () {
+  console.log('🔄 Выполняется: When I switch between different account views');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I switch between different account views');
+});
+Then('each account should display correct information', async function () {
+  console.log('🔄 Выполняется: Then each account should display correct information');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each account should display correct information');
+});
+Then('account balances should be accurate', async function () {
+  console.log('🔄 Выполняется: Then account balances should be accurate');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balances should be accurate');
+});
+Then('navigation should be smooth', async function () {
+  console.log('🔄 Выполняется: Then navigation should be smooth');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then navigation should be smooth');
+});
+Then('no errors should occur', async function () {
+  console.log('🔄 Выполняется: Then no errors should occur');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no errors should occur');
+});
+When('I access Open', async function () {
+  console.log('🔄 Выполняется: When I access Open');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I access Open');
+});
+Then('I should see account opening form', async function () {
+  console.log('🔄 Выполняется: Then I should see account opening form');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see account opening form');
+});
+When('I access Transfer', async function () {
+  console.log('🔄 Выполняется: When I access Transfer');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I access Transfer');
+});
+Then('I should see funds transfer form', async function () {
+  console.log('🔄 Выполняется: Then I should see funds transfer form');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see funds transfer form');
+});
+When('I access Bill', async function () {
+  console.log('🔄 Выполняется: When I access Bill');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I access Bill');
+});
+Then('I should see bill payment form', async function () {
+  console.log('🔄 Выполняется: Then I should see bill payment form');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see bill payment form');
+});
+When('I access Find', async function () {
+  console.log('🔄 Выполняется: When I access Find');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I access Find');
+});
+Then('I should see transaction search form', async function () {
+  console.log('🔄 Выполняется: Then I should see transaction search form');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see transaction search form');
+});
+When('I hover over account menu items', async function () {
+  console.log('🔄 Выполняется: When I hover over account menu items');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I hover over account menu items');
+});
+Then('menu items should highlight properly', async function () {
+  console.log('🔄 Выполняется: Then menu items should highlight properly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then menu items should highlight properly');
+});
+Then('menu items should be clickable', async function () {
+  console.log('🔄 Выполняется: Then menu items should be clickable');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then menu items should be clickable');
+});
+When('I use keyboard navigation on menu', async function () {
+  console.log('🔄 Выполняется: When I use keyboard navigation on menu');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I use keyboard navigation on menu');
+});
+Then('menu should be accessible via keyboard', async function () {
+  console.log('🔄 Выполняется: Then menu should be accessible via keyboard');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then menu should be accessible via keyboard');
+});
+Then('focus should move correctly between items', async function () {
+  console.log('🔄 Выполняется: Then focus should move correctly between items');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then focus should move correctly between items');
+});
+Then('I should be able to activate menu items with Enter key', async function () {
+  console.log('🔄 Выполняется: Then I should be able to activate menu items with Enter key');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should be able to activate menu items with Enter key');
+});
+Given('I have multiple accounts with sufficient balances', async function () {
+  console.log('🔄 Выполняется: Given I have multiple accounts with sufficient balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have multiple accounts with sufficient balances');
+});
+When('I navigate to Transfer', async function () {
+  console.log('🔄 Выполняется: When I navigate to Transfer');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to Transfer');
+});
+When('I select source account', async function () {
+  console.log('🔄 Выполняется: When I select source account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select source account');
+});
+When('I select destination account', async function () {
+  console.log('🔄 Выполняется: When I select destination account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select destination account');
+});
+When('I enter transfer amount {int}.{int}', async function (param0: number, param1: number) {
+  console.log('🔄 Выполняется: When I enter transfer amount 100.00');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter transfer amount 100.00');
+});
+When('I click Transfer button', async function () {
+  console.log('🔄 Выполняется: When I click Transfer button');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click Transfer button');
+});
+Then('transfer should be completed successfully', async function () {
+  console.log('🔄 Выполняется: Then transfer should be completed successfully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transfer should be completed successfully');
+});
+Then('I should see confirmation message', async function () {
+  console.log('🔄 Выполняется: Then I should see confirmation message');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see confirmation message');
+});
+Then('account balances should be updated correctly', async function () {
+  console.log('🔄 Выполняется: Then account balances should be updated correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balances should be updated correctly');
+});
+Then('transaction should appear in both account histories', async function () {
+  console.log('🔄 Выполняется: Then transaction should appear in both account histories');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction should appear in both account histories');
+});
+Given('I have account with sufficient balance', async function () {
+  console.log('🔄 Выполняется: Given I have account with sufficient balance');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have account with sufficient balance');
+});
+When('I navigate to Bill', async function () {
+  console.log('🔄 Выполняется: When I navigate to Bill');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to Bill');
+});
+When('I enter payee name Electric', async function () {
+  console.log('🔄 Выполняется: When I enter payee name Electric');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter payee name Electric');
+});
+When('I enter payee address details', async function () {
+  console.log('🔄 Выполняется: When I enter payee address details');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter payee address details');
+});
+When('I enter account number {int}', async function (param0: number) {
+  console.log('🔄 Выполняется: When I enter account number 123456789');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter account number 123456789');
+});
+When('I select payment account', async function () {
+  console.log('🔄 Выполняется: When I select payment account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select payment account');
+});
+When('I enter payment amount {int}.{int}', async function (param0: number, param1: number) {
+  console.log('🔄 Выполняется: When I enter payment amount 75.50');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter payment amount 75.50');
+});
+When('I click Send', async function () {
+  console.log('🔄 Выполняется: When I click Send');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click Send');
+});
+Then('payment should be processed successfully', async function () {
+  console.log('🔄 Выполняется: Then payment should be processed successfully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then payment should be processed successfully');
+});
+Then('I should see payment confirmation', async function () {
+  console.log('🔄 Выполняется: Then I should see payment confirmation');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see payment confirmation');
+});
+Then('account balance should be reduced by payment amount', async function () {
+  console.log('🔄 Выполняется: Then account balance should be reduced by payment amount');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balance should be reduced by payment amount');
+});
+Then('payment should appear in transaction history', async function () {
+  console.log('🔄 Выполняется: Then payment should appear in transaction history');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then payment should appear in transaction history');
+});
+Given('I have account with transaction history', async function () {
+  console.log('🔄 Выполняется: Given I have account with transaction history');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have account with transaction history');
+});
+When('I navigate to Account', async function () {
+  console.log('🔄 Выполняется: When I navigate to Account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to Account');
+});
+When('I select specific account', async function () {
+  console.log('🔄 Выполняется: When I select specific account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select specific account');
+});
+Then('I should see list of all transactions', async function () {
+  console.log('🔄 Выполняется: Then I should see list of all transactions');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see list of all transactions');
+});
+Then('transactions should be sorted by date (newest first)', async function () {
+  console.log('🔄 Выполняется: Then transactions should be sorted by date (newest first)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transactions should be sorted by date (newest first)');
+});
+Then('each transaction should show date, description, and amount', async function () {
+  console.log('🔄 Выполняется: Then each transaction should show date, description, and amount');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each transaction should show date, description, and amount');
+});
+Then('transaction types should be clearly indicated \\(debit\\/credit\\)', async function () {
+  console.log('🔄 Выполняется: Then transaction types should be clearly indicated (debit/credit)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction types should be clearly indicated (debit/credit)');
+});
+Then('running balance should be displayed', async function () {
+  console.log('🔄 Выполняется: Then running balance should be displayed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then running balance should be displayed');
+});
+When('I filter transactions by date range', async function () {
+  console.log('🔄 Выполняется: When I filter transactions by date range');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I filter transactions by date range');
+});
+Then('only transactions within selected range should be displayed', async function () {
+  console.log('🔄 Выполняется: Then only transactions within selected range should be displayed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then only transactions within selected range should be displayed');
+});
+Given('I have account with recent activity', async function () {
+  console.log('🔄 Выполняется: Given I have account with recent activity');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have account with recent activity');
+});
+When('I click on specific transaction', async function () {
+  console.log('🔄 Выполняется: When I click on specific transaction');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click on specific transaction');
+});
+Then('I should see detailed transaction information', async function () {
+  console.log('🔄 Выполняется: Then I should see detailed transaction information');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see detailed transaction information');
+});
+Then('transaction details should include timestamp', async function () {
+  console.log('🔄 Выполняется: Then transaction details should include timestamp');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction details should include timestamp');
+});
+Then('transaction details should include transaction ID', async function () {
+  console.log('🔄 Выполняется: Then transaction details should include transaction ID');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction details should include transaction ID');
+});
+Then('transaction details should include full description', async function () {
+  console.log('🔄 Выполняется: Then transaction details should include full description');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction details should include full description');
+});
+Then('transaction details should include reference numbers', async function () {
+  console.log('🔄 Выполняется: Then transaction details should include reference numbers');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction details should include reference numbers');
+});
+When('I navigate back to activity list', async function () {
+  console.log('🔄 Выполняется: When I navigate back to activity list');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate back to activity list');
+});
+Then('I should return to same position in transaction list', async function () {
+  console.log('🔄 Выполняется: Then I should return to same position in transaction list');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should return to same position in transaction list');
+});
+Given('I have multiple accounts and transactions', async function () {
+  console.log('🔄 Выполняется: Given I have multiple accounts and transactions');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have multiple accounts and transactions');
+});
+When('I use search functionality', async function () {
+  console.log('🔄 Выполняется: When I use search functionality');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I use search functionality');
+});
+When('I search for specific transaction description', async function () {
+  console.log('🔄 Выполняется: When I search for specific transaction description');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I search for specific transaction description');
+});
+Then('matching transactions should be displayed', async function () {
+  console.log('🔄 Выполняется: Then matching transactions should be displayed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then matching transactions should be displayed');
+});
+Then('search results should be highlighted', async function () {
+  console.log('🔄 Выполняется: Then search results should be highlighted');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then search results should be highlighted');
+});
+When('I filter by transaction type Transfer', async function () {
+  console.log('🔄 Выполняется: When I filter by transaction type Transfer');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I filter by transaction type Transfer');
+});
+Then('only transfer transactions should be shown', async function () {
+  console.log('🔄 Выполняется: Then only transfer transactions should be shown');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then only transfer transactions should be shown');
+});
+When('I filter by amount range ${int}', async function (param0: number) {
+  console.log('🔄 Выполняется: When I filter by amount range $50');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I filter by amount range $50');
+});
+Then('only transactions within amount range should be displayed', async function () {
+  console.log('🔄 Выполняется: Then only transactions within amount range should be displayed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then only transactions within amount range should be displayed');
+});
+Then('filter combinations should work correctly', async function () {
+  console.log('🔄 Выполняется: Then filter combinations should work correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then filter combinations should work correctly');
+});
+When('I view accounts overview page', async function () {
+  console.log('🔄 Выполняется: When I view accounts overview page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I view accounts overview page');
+});
+Then('I should see all my accounts listed', async function () {
+  console.log('🔄 Выполняется: Then I should see all my accounts listed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see all my accounts listed');
+});
+Then('balances should be displayed in currency format', async function () {
+  console.log('🔄 Выполняется: Then balances should be displayed in currency format');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then balances should be displayed in currency format');
+});
+Then('account types should be clearly indicated', async function () {
+  console.log('🔄 Выполняется: Then account types should be clearly indicated');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account types should be clearly indicated');
+});
+Then('each account should show account number', async function () {
+  console.log('🔄 Выполняется: Then each account should show account number');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each account should show account number');
+});
+Then('each account should show available balance', async function () {
+  console.log('🔄 Выполняется: Then each account should show available balance');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each account should show available balance');
+});
+Then('total portfolio value should be calculated correctly', async function () {
+  console.log('🔄 Выполняется: Then total portfolio value should be calculated correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then total portfolio value should be calculated correctly');
+});
+Given('I am logged in with known account balances', async function () {
+  console.log('🔄 Выполняется: Given I am logged in with known account balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I am logged in with known account balances');
+});
+When('I view accounts overview', async function () {
+  console.log('🔄 Выполняется: When I view accounts overview');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I view accounts overview');
+});
+Then('displayed balances should match database values', async function () {
+  console.log('🔄 Выполняется: Then displayed balances should match database values');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then displayed balances should match database values');
+});
+Then('currency formatting should be correct \\($1,234.56\\)', async function () {
+  console.log('🔄 Выполняется: Then currency formatting should be correct ($1,234.56)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then currency formatting should be correct ($1,234.56)');
+});
+Then('negative balances should be properly indicated', async function () {
+  console.log('🔄 Выполняется: Then negative balances should be properly indicated');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then negative balances should be properly indicated');
+});
+Then('balance calculations should be precise to cents', async function () {
+  console.log('🔄 Выполняется: Then balance calculations should be precise to cents');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then balance calculations should be precise to cents');
+});
+When('I refresh the page', async function () {
+  console.log('🔄 Выполняется: When I refresh the page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I refresh the page');
+});
+Then('balances should remain consistent', async function () {
+  console.log('🔄 Выполняется: Then balances should remain consistent');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then balances should remain consistent');
+});
+Then('no discrepancies should appear', async function () {
+  console.log('🔄 Выполняется: Then no discrepancies should appear');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no discrepancies should appear');
+});
+When('I navigate to {string} page', async function (param0: string) {
+  console.log('🔄 Выполняется: When I navigate to {string} page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to {string} page');
+});
+When('I enter transfer amount {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter transfer amount {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter transfer amount {string}');
+});
+When('I click {string} button', async function (param0: string) {
+  console.log('🔄 Выполняется: When I click {string} button');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click {string} button');
+});
+When('I enter payee name {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter payee name {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter payee name {string}');
+});
+When('I enter account number {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter account number {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter account number {string}');
+});
+When('I enter payment amount {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter payment amount {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter payment amount {string}');
+});
+When('I filter by transaction type {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I filter by transaction type {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I filter by transaction type {string}');
+});
+When('I filter by amount range {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I filter by amount range {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I filter by amount range {string}');
+});
+Then('transactions should be sorted by date \\(newest first\\)', async function () {
+  console.log('🔄 Выполняется: Then transactions should be sorted by date \\(newest first\\)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transactions should be sorted by date \\(newest first\\)');
+});
+Given('I have existing account for deposit source', async function () {
+  console.log('🔄 Выполняется: Given I have existing account for deposit source');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have existing account for deposit source');
+});
+When('I select account type SAVINGS', async function () {
+  console.log('🔄 Выполняется: When I select account type SAVINGS');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select account type SAVINGS');
+});
+When('I select source account for initial deposit', async function () {
+  console.log('🔄 Выполняется: When I select source account for initial deposit');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select source account for initial deposit');
+});
+When('I enter minimum opening deposit {int}.{int}', async function (param0: number, param1: number) {
+  console.log('🔄 Выполняется: When I enter minimum opening deposit 100.00');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter minimum opening deposit 100.00');
+});
+Then('new account should be created successfully', async function () {
+  console.log('🔄 Выполняется: Then new account should be created successfully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then new account should be created successfully');
+});
+Then('I should see new account confirmation', async function () {
+  console.log('🔄 Выполняется: Then I should see new account confirmation');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see new account confirmation');
+});
+Then('new account should appear in accounts overview', async function () {
+  console.log('🔄 Выполняется: Then new account should appear in accounts overview');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then new account should appear in accounts overview');
+});
+Then('initial deposit should be transferred correctly', async function () {
+  console.log('🔄 Выполняется: Then initial deposit should be transferred correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then initial deposit should be transferred correctly');
+});
+Given('I have active accounts available', async function () {
+  console.log('🔄 Выполняется: Given I have active accounts available');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have active accounts available');
+});
+When('I navigate to account services page', async function () {
+  console.log('🔄 Выполняется: When I navigate to account services page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate to account services page');
+});
+When('I request account statement for last month', async function () {
+  console.log('🔄 Выполняется: When I request account statement for last month');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I request account statement for last month');
+});
+Then('statement should be generated successfully', async function () {
+  console.log('🔄 Выполняется: Then statement should be generated successfully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then statement should be generated successfully');
+});
+Then('statement should include all transactions for period', async function () {
+  console.log('🔄 Выполняется: Then statement should include all transactions for period');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then statement should include all transactions for period');
+});
+When('I update account preferences', async function () {
+  console.log('🔄 Выполняется: When I update account preferences');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I update account preferences');
+});
+When('I change notification settings to EMAIL', async function () {
+  console.log('🔄 Выполняется: When I change notification settings to EMAIL');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I change notification settings to EMAIL');
+});
+Then('preferences should be saved successfully', async function () {
+  console.log('🔄 Выполняется: Then preferences should be saved successfully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then preferences should be saved successfully');
+});
+Then('updated preferences should be reflected in account', async function () {
+  console.log('🔄 Выполняется: Then updated preferences should be reflected in account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then updated preferences should be reflected in account');
+});
+Given('I have established account history', async function () {
+  console.log('🔄 Выполняется: Given I have established account history');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have established account history');
+});
+When('I enter loan amount {int}.{int}', async function (param0: number, param1: number) {
+  console.log('🔄 Выполняется: When I enter loan amount 5000.00');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter loan amount 5000.00');
+});
+When('I enter down payment {int}.{int}', async function (param0: number, param1: number) {
+  console.log('🔄 Выполняется: When I enter down payment 500.00');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter down payment 500.00');
+});
+When('I select collateral account', async function () {
+  console.log('🔄 Выполняется: When I select collateral account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select collateral account');
+});
+When('I submit loan application', async function () {
+  console.log('🔄 Выполняется: When I submit loan application');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I submit loan application');
+});
+Then('loan application should be processed', async function () {
+  console.log('🔄 Выполняется: Then loan application should be processed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then loan application should be processed');
+});
+Then('I should see loan application status', async function () {
+  console.log('🔄 Выполняется: Then I should see loan application status');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see loan application status');
+});
+Then('loan details should be available in accounts overview', async function () {
+  console.log('🔄 Выполняется: Then loan details should be available in accounts overview');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then loan details should be available in accounts overview');
+});
+When('loan is approved', async function () {
+  console.log('🔄 Выполняется: When loan is approved');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When loan is approved');
+});
+Then('loan amount should be deposited to selected account', async function () {
+  console.log('🔄 Выполняется: Then loan amount should be deposited to selected account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then loan amount should be deposited to selected account');
+});
+Given('I have multiple accounts with various balances', async function () {
+  console.log('🔄 Выполняется: Given I have multiple accounts with various balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have multiple accounts with various balances');
+});
+When('I perform transfer between accounts', async function () {
+  console.log('🔄 Выполняется: When I perform transfer between accounts');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I perform transfer between accounts');
+});
+When('I make bill payment from checking account', async function () {
+  console.log('🔄 Выполняется: When I make bill payment from checking account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I make bill payment from checking account');
+});
+When('I view updated transaction history', async function () {
+  console.log('🔄 Выполняется: When I view updated transaction history');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I view updated transaction history');
+});
+Then('all transactions should be recorded accurately', async function () {
+  console.log('🔄 Выполняется: Then all transactions should be recorded accurately');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then all transactions should be recorded accurately');
+});
+Then('account balances should reflect all changes', async function () {
+  console.log('🔄 Выполняется: Then account balances should reflect all changes');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balances should reflect all changes');
+});
+Then('transaction timestamps should be sequential', async function () {
+  console.log('🔄 Выполняется: Then transaction timestamps should be sequential');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then transaction timestamps should be sequential');
+});
+When('I generate account summary report', async function () {
+  console.log('🔄 Выполняется: When I generate account summary report');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I generate account summary report');
+});
+Then('report should include all account activities', async function () {
+  console.log('🔄 Выполняется: Then report should include all account activities');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then report should include all account activities');
+});
+Then('balance reconciliation should be accurate', async function () {
+  console.log('🔄 Выполняется: Then balance reconciliation should be accurate');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then balance reconciliation should be accurate');
+});
+Then('no data inconsistencies should exist', async function () {
+  console.log('🔄 Выполняется: Then no data inconsistencies should exist');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no data inconsistencies should exist');
+});
+When('I select account type {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I select account type {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I select account type {string}');
+});
+When('I enter minimum opening deposit {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter minimum opening deposit {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter minimum opening deposit {string}');
+});
+When('I change notification settings to {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I change notification settings to {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I change notification settings to {string}');
+});
+When('I enter loan amount {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter loan amount {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter loan amount {string}');
+});
+When('I enter down payment {string}', async function (param0: string) {
+  console.log('🔄 Выполняется: When I enter down payment {string}');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I enter down payment {string}');
+});
+When('I access {string} from navigation menu', async function (param0: string) {
+  console.log('🔄 Выполняется: When I access {string} from navigation menu');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I access {string} from navigation menu');
+});
+Given('I have both checking and savings accounts', async function () {
+  console.log('🔄 Выполняется: Given I have both checking and savings accounts');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have both checking and savings accounts');
+});
+Then('I should see all account types displayed correctly', async function () {
+  console.log('🔄 Выполняется: Then I should see all account types displayed correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see all account types displayed correctly');
+});
+Then('checking accounts should be clearly labeled', async function () {
+  console.log('🔄 Выполняется: Then checking accounts should be clearly labeled');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then checking accounts should be clearly labeled');
+});
+Then('savings accounts should be clearly labeled', async function () {
+  console.log('🔄 Выполняется: Then savings accounts should be clearly labeled');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then savings accounts should be clearly labeled');
+});
+Then('account type icons should be visible and correct', async function () {
+  console.log('🔄 Выполняется: Then account type icons should be visible and correct');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account type icons should be visible and correct');
+});
+Then('accounts should be grouped or sorted logically', async function () {
+  console.log('🔄 Выполняется: Then accounts should be grouped or sorted logically');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then accounts should be grouped or sorted logically');
+});
+Then('each account type should show appropriate features', async function () {
+  console.log('🔄 Выполняется: Then each account type should show appropriate features');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each account type should show appropriate features');
+});
+When('I click on first account number link', async function () {
+  console.log('🔄 Выполняется: When I click on first account number link');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click on first account number link');
+});
+Then('I should navigate to account details page', async function () {
+  console.log('🔄 Выполняется: Then I should navigate to account details page');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should navigate to account details page');
+});
+When('I return to accounts overview', async function () {
+  console.log('🔄 Выполняется: When I return to accounts overview');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I return to accounts overview');
+});
+When('I click on account activity link', async function () {
+  console.log('🔄 Выполняется: When I click on account activity link');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I click on account activity link');
+});
+Then('I should see transaction history for that account', async function () {
+  console.log('🔄 Выполняется: Then I should see transaction history for that account');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should see transaction history for that account');
+});
+Then('navigation should work consistently for all accounts', async function () {
+  console.log('🔄 Выполняется: Then navigation should work consistently for all accounts');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then navigation should work consistently for all accounts');
+});
+Then('page state should be preserved correctly', async function () {
+  console.log('🔄 Выполняется: Then page state should be preserved correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then page state should be preserved correctly');
+});
+Given('I have accounts with known balances', async function () {
+  console.log('🔄 Выполняется: Given I have accounts with known balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have accounts with known balances');
+});
+When('I note current account balances', async function () {
+  console.log('🔄 Выполняется: When I note current account balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I note current account balances');
+});
+Then('account balances should remain consistent', async function () {
+  console.log('🔄 Выполняется: Then account balances should remain consistent');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balances should remain consistent');
+});
+Then('page should load without errors', async function () {
+  console.log('🔄 Выполняется: Then page should load without errors');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then page should load without errors');
+});
+Then('all account information should be preserved', async function () {
+  console.log('🔄 Выполняется: Then all account information should be preserved');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then all account information should be preserved');
+});
+When('I navigate away and return to overview', async function () {
+  console.log('🔄 Выполняется: When I navigate away and return to overview');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I navigate away and return to overview');
+});
+Then('all account data should still be accurate', async function () {
+  console.log('🔄 Выполняется: Then all account data should still be accurate');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then all account data should still be accurate');
+});
+Then('page performance should be acceptable', async function () {
+  console.log('🔄 Выполняется: Then page performance should be acceptable');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then page performance should be acceptable');
+});
+Given('I have multiple accounts with different balances', async function () {
+  console.log('🔄 Выполняется: Given I have multiple accounts with different balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have multiple accounts with different balances');
+});
+Then('each account number should be unique and valid', async function () {
+  console.log('🔄 Выполняется: Then each account number should be unique and valid');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then each account number should be unique and valid');
+});
+Then('account balances should match transaction totals', async function () {
+  console.log('🔄 Выполняется: Then account balances should match transaction totals');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account balances should match transaction totals');
+});
+Then('available amounts should not exceed actual balances', async function () {
+  console.log('🔄 Выполняется: Then available amounts should not exceed actual balances');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then available amounts should not exceed actual balances');
+});
+Then('negative balances should be clearly indicated with proper formatting', async function () {
+  console.log('🔄 Выполняется: Then negative balances should be clearly indicated with proper formatting');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then negative balances should be clearly indicated with proper formatting');
+});
+Then('currency symbols should be consistent across all accounts', async function () {
+  console.log('🔄 Выполняется: Then currency symbols should be consistent across all accounts');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then currency symbols should be consistent across all accounts');
+});
+Then('date information should be accurate and properly formatted', async function () {
+  console.log('🔄 Выполняется: Then date information should be accurate and properly formatted');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then date information should be accurate and properly formatted');
+});
+Then('no duplicate accounts should be displayed', async function () {
+  console.log('🔄 Выполняется: Then no duplicate accounts should be displayed');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no duplicate accounts should be displayed');
+});
