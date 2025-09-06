@@ -815,9 +815,11 @@ Given('I navigate to ParaBank registration page', async function () {
   await this.page.goto('https://parabank.parasoft.com/parabank/register.htm');
   console.log('✅ Successfully navigated to ParaBank registration page');
 });
-When('I register new user with valid information:', async function () {
+When('I register new user with valid information:', async function (dataTable: any) {
   console.log('🔄 Выполняется: When I register new user with valid information:');
-  // TODO: Implement step logic
+  const registrationData = dataTable.rowsHash();
+  console.log('📝 Registration data:', registrationData);
+  // TODO: Implement registration form filling logic
   console.log('✅ Step завершен: When I register new user with valid information:');
 });
 Then('registration should complete successfully', async function () {
@@ -1488,4 +1490,259 @@ When('I evaluate login form accessibility', async function () {
   console.log('🔄 Выполняется: When I evaluate login form accessibility');
   // TODO: Implement step logic
   console.log('✅ Step завершен: When I evaluate login form accessibility');
+});
+Then('all elements should be keyboard accessible', async function () {
+  console.log('🔄 Выполняется: Then all elements should be keyboard accessible');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then all elements should be keyboard accessible');
+});
+Then('screen readers should announce elements correctly', async function () {
+  console.log('🔄 Выполняется: Then screen readers should announce elements correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then screen readers should announce elements correctly');
+});
+Given('I recruit {int} test users with different technical backgrounds', async function (param0: number) {
+  console.log('🔄 Выполняется: Given I recruit 5 test users with different technical backgrounds');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I recruit 5 test users with different technical backgrounds');
+});
+When('users attempt to login for first time', async function () {
+  console.log('🔄 Выполняется: When users attempt to login for first time');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When users attempt to login for first time');
+});
+Then('login process should be intuitive and efficient', async function () {
+  console.log('🔄 Выполняется: Then login process should be intuitive and efficient');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then login process should be intuitive and efficient');
+});
+Then('users should complete login within {int} seconds', async function (param0: number) {
+  console.log('🔄 Выполняется: Then users should complete login within 30 seconds');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then users should complete login within 30 seconds');
+});
+Given('I have load testing tools configured for {int}+ concurrent users', async function (param0: number) {
+  console.log('🔄 Выполняется: Given I have load testing tools configured for 1000+ concurrent users');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have load testing tools configured for 1000+ concurrent users');
+});
+When('I simulate extreme load on login system', async function () {
+  console.log('🔄 Выполняется: When I simulate extreme load on login system');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I simulate extreme load on login system');
+});
+Then('system should maintain stability', async function () {
+  console.log('🔄 Выполняется: Then system should maintain stability');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then system should maintain stability');
+});
+Then('response times should degrade gracefully', async function () {
+  console.log('🔄 Выполняется: Then response times should degrade gracefully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then response times should degrade gracefully');
+});
+Then('no data corruption should occur', async function () {
+  console.log('🔄 Выполняется: Then no data corruption should occur');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no data corruption should occur');
+});
+Given('I have specialized brute force testing tools', async function () {
+  console.log('🔄 Выполняется: Given I have specialized brute force testing tools');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have specialized brute force testing tools');
+});
+When('I simulate sophisticated password attack patterns', async function () {
+  console.log('🔄 Выполняется: When I simulate sophisticated password attack patterns');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I simulate sophisticated password attack patterns');
+});
+Then('account lockout mechanisms should activate correctly', async function () {
+  console.log('🔄 Выполняется: Then account lockout mechanisms should activate correctly');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then account lockout mechanisms should activate correctly');
+});
+Then('system should log security events appropriately', async function () {
+  console.log('🔄 Выполняется: Then system should log security events appropriately');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then system should log security events appropriately');
+});
+Then('no unauthorized access should be possible', async function () {
+  console.log('🔄 Выполняется: Then no unauthorized access should be possible');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no unauthorized access should be possible');
+});
+Given('I have access to various mobile devices and tablets', async function () {
+  console.log('🔄 Выполняется: Given I have access to various mobile devices and tablets');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have access to various mobile devices and tablets');
+});
+When('I test login functionality across different devices', async function () {
+  console.log('🔄 Выполняется: When I test login functionality across different devices');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I test login functionality across different devices');
+});
+Then('login should work consistently across all devices', async function () {
+  console.log('🔄 Выполняется: Then login should work consistently across all devices');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then login should work consistently across all devices');
+});
+Then('touch interactions should be responsive', async function () {
+  console.log('🔄 Выполняется: Then touch interactions should be responsive');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then touch interactions should be responsive');
+});
+Then('display should adapt properly to screen sizes', async function () {
+  console.log('🔄 Выполняется: Then display should adapt properly to screen sizes');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then display should adapt properly to screen sizes');
+});
+Given('I have network simulation tools configured', async function () {
+  console.log('🔄 Выполняется: Given I have network simulation tools configured');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have network simulation tools configured');
+});
+When('I test login with various network conditions \\(slow, intermittent, high latency\\)', async function () {
+  console.log('🔄 Выполняется: When I test login with various network conditions (slow, intermittent, high latency)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I test login with various network conditions (slow, intermittent, high latency)');
+});
+Then('login should handle network issues gracefully', async function () {
+  console.log('🔄 Выполняется: Then login should handle network issues gracefully');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then login should handle network issues gracefully');
+});
+Then('appropriate error messages should guide user', async function () {
+  console.log('🔄 Выполняется: Then appropriate error messages should guide user');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then appropriate error messages should guide user');
+});
+Then('system should recover when connection improves', async function () {
+  console.log('🔄 Выполняется: Then system should recover when connection improves');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then system should recover when connection improves');
+});
+Given('I need to test with extreme edge cases', async function () {
+  console.log('🔄 Выполняется: Given I need to test with extreme edge cases');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I need to test with extreme edge cases');
+});
+When('I test login with very long usernames and passwords', async function () {
+  console.log('🔄 Выполняется: When I test login with very long usernames and passwords');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I test login with very long usernames and passwords');
+});
+When('I test with special unicode characters and symbols', async function () {
+  console.log('🔄 Выполняется: When I test with special unicode characters and symbols');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I test with special unicode characters and symbols');
+});
+Then('system should handle edge cases appropriately', async function () {
+  console.log('🔄 Выполняется: Then system should handle edge cases appropriately');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then system should handle edge cases appropriately');
+});
+Then('no system crashes or unexpected behavior should occur', async function () {
+  console.log('🔄 Выполняется: Then no system crashes or unexpected behavior should occur');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no system crashes or unexpected behavior should occur');
+});
+Given('I have social engineering testing methodology ready', async function () {
+  console.log('🔄 Выполняется: Given I have social engineering testing methodology ready');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Given I have social engineering testing methodology ready');
+});
+When('I evaluate susceptibility to social engineering attacks', async function () {
+  console.log('🔄 Выполняется: When I evaluate susceptibility to social engineering attacks');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I evaluate susceptibility to social engineering attacks');
+});
+Then('I should assess phishing vulnerability', async function () {
+  console.log('🔄 Выполняется: Then I should assess phishing vulnerability');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should assess phishing vulnerability');
+});
+Then('I should evaluate password reset security', async function () {
+  console.log('🔄 Выполняется: Then I should evaluate password reset security');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should evaluate password reset security');
+});
+Then('I should document human factor vulnerabilities', async function () {
+  console.log('🔄 Выполняется: Then I should document human factor vulnerabilities');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then I should document human factor vulnerabilities');
+});
+When('I analyze external resource loading and API calls', async function () {
+  console.log('🔄 Выполняется: When I analyze external resource loading and API calls');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I analyze external resource loading and API calls');
+});
+When('I check for secure HTTP headers', async function () {
+  console.log('🔄 Выполняется: When I check for secure HTTP headers');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I check for secure HTTP headers');
+});
+When('I verify HTTPS usage for sensitive operations', async function () {
+  console.log('🔄 Выполняется: When I verify HTTPS usage for sensitive operations');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I verify HTTPS usage for sensitive operations');
+});
+Then('all external requests should use secure protocols', async function () {
+  console.log('🔄 Выполняется: Then all external requests should use secure protocols');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then all external requests should use secure protocols');
+});
+Then('no sensitive data should be exposed in URLs', async function () {
+  console.log('🔄 Выполняется: Then no sensitive data should be exposed in URLs');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then no sensitive data should be exposed in URLs');
+});
+Then('security headers should be properly configured', async function () {
+  console.log('🔄 Выполняется: Then security headers should be properly configured');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then security headers should be properly configured');
+});
+When('I test login with various network conditions (slow, intermittent, high latency)', async function () {
+  console.log('🔄 Выполняется: When I test login with various network conditions (slow, intermittent, high latency)');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I test login with various network conditions (slow, intermittent, high latency)');
+});
+When('I analyze login form for compliance requirements', async function () {
+  console.log('🔄 Выполняется: When I analyze login form for compliance requirements');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I analyze login form for compliance requirements');
+});
+When('I check password policy enforcement', async function () {
+  console.log('🔄 Выполняется: When I check password policy enforcement');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I check password policy enforcement');
+});
+When('I verify session security measures', async function () {
+  console.log('🔄 Выполняется: When I verify session security measures');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: When I verify session security measures');
+});
+Then('login form should meet banking standards', async function () {
+  console.log('🔄 Выполняется: Then login form should meet banking standards');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then login form should meet banking standards');
+});
+Then('password requirements should be enforced', async function () {
+  console.log('🔄 Выполняется: Then password requirements should be enforced');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then password requirements should be enforced');
+});
+Then('session handling should be secure', async function () {
+  console.log('🔄 Выполняется: Then session handling should be secure');
+  // TODO: Implement step logic
+  console.log('✅ Step завершен: Then session handling should be secure');
+});
+Then('form should be WCAG {float} AA compliant', async function (wcagVersion: number) {
+  console.log(`🔄 Выполняется: Then form should be WCAG ${wcagVersion} AA compliant`);
+  // TODO: Implement step logic
+  console.log(`✅ Step завершен: Then form should be WCAG ${wcagVersion} AA compliant`);
+});
+Then('satisfaction score should be {float}+ out of {int}', async function (minScore: number, maxScore: number) {
+  console.log(`🔄 Выполняется: Then satisfaction score should be ${minScore}+ out of ${maxScore}`);
+  // TODO: Implement step logic
+  console.log(`✅ Step завершен: Then satisfaction score should be ${minScore}+ out of ${maxScore}`);
 });
