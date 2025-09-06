@@ -8,7 +8,7 @@ import { Browser, BrowserContext, Page, chromium } from 'playwright';
 class BrowserPoolManager {
   private static instance: BrowserPoolManager;
   private activeBrowsers: Map<string, Browser> = new Map();
-  private maxBrowsers: number = 3; // Максимум 3 браузера
+  private maxBrowsers: number = 5; // Максимум 5 браузеров
   private waitingQueue: Array<() => void> = [];
 
   private constructor() {}

@@ -16,10 +16,10 @@ const config = {
       snippetInterface: 'async-await'
     },
     dryRun: false,
-    failFast: true, // Stop on first failure
+    failFast: false, // Don't stop on first failure in parallel mode
     strict: false,
     paths: ['features/**/*.feature'],
-    parallel: 1, // ONLY 1 PROCESS AT A TIME
+    parallel: 5, // Maximum 5 parallel processes
     retry: 0, // No retries for now
     timeout: 120000, // 2 minutes
     worldParameters: {

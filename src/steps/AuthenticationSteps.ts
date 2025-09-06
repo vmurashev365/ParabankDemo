@@ -3,43 +3,41 @@ import { expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { chromium, Browser, BrowserContext, Page } from 'playwright';
+import BrowserPoolManager from '../support/BrowserPoolManager';
 
 console.log('🚀 Loading AuthenticationSteps.ts');
+
+// Helper function to initialize browser through BrowserPoolManager
+async function initBrowserThroughPool(world: any) {
+  if (!world.sessionId) {
+    world.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+  
+  const browserPool = BrowserPoolManager.getInstance();
+  world.browser = await browserPool.acquireBrowser(world.sessionId);
+  
+  world.context = await world.browser.newContext({
+    viewport: { width: 1920, height: 1080 },
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+  });
+  
+  world.page = await world.context.newPage();
+  
+  // Add stealth scripts
+  await world.page.addInitScript(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => undefined,
+    });
+  });
+}
 
 Given('ParaBank application is accessible', async function () {
   console.log('🔍 Verifying ParaBank accessibility...');
   
-  // Initialize browser manually if not already done
+  // Initialize browser using BrowserPoolManager if not already done
   if (!this.page) {
-    console.log('🚀 Initializing browser manually...');
-    
-    this.browser = await chromium.launch({
-      headless: false,
-      args: [
-        '--disable-blink-features=AutomationControlled',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--no-first-run',
-        '--disable-extensions',
-        '--disable-dev-shm-usage',
-        '--disable-default-apps'
-      ]
-    });
-
-    this.context = await this.browser.newContext({
-      viewport: { width: 1920, height: 1080 },
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-    });
-
-    this.page = await this.context.newPage();
-    
-    // Add stealth scripts
-    await this.page.addInitScript(() => {
-      Object.defineProperty(navigator, 'webdriver', {
-        get: () => undefined,
-      });
-    });
-    
+    console.log('🚀 Initializing browser through BrowserPoolManager...');
+    await initBrowserThroughPool(this);
     console.log('✅ Browser initialized successfully');
   }
   
@@ -83,27 +81,8 @@ Given('I navigate to ParaBank homepage', async function () {
   console.log('🏠 Navigating to ParaBank homepage...');
   
   if (!this.page) {
-    console.log('🚀 Initializing browser manually...');
-    
-    this.browser = await chromium.launch({
-      headless: false,
-      args: [
-        '--disable-blink-features=AutomationControlled',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--no-first-run',
-        '--disable-extensions',
-        '--disable-dev-shm-usage',
-        '--disable-default-apps'
-      ]
-    });
-
-    this.context = await this.browser.newContext({
-      viewport: { width: 1920, height: 1080 },
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-    });
-
-    this.page = await this.context.newPage();
+    console.log('🚀 Initializing browser through BrowserPoolManager...');
+    await initBrowserThroughPool(this);
     
     console.log('✅ Browser initialized successfully');
   }
@@ -788,27 +767,8 @@ Given('I navigate to ParaBank registration page', async function () {
   const page = this.page;
   
   if (!page) {
-    console.log('🚀 Initializing browser manually...');
-    
-    this.browser = await chromium.launch({
-      headless: false,
-      args: [
-        '--disable-blink-features=AutomationControlled',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--no-first-run',
-        '--disable-extensions',
-        '--disable-dev-shm-usage',
-        '--disable-default-apps'
-      ]
-    });
-
-    this.context = await this.browser.newContext({
-      viewport: { width: 1920, height: 1080 },
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-    });
-
-    this.page = await this.context.newPage();
+    console.log('🚀 Initializing browser through BrowserPoolManager...');
+    await initBrowserThroughPool(this);
     console.log('✅ Browser initialized successfully');
   }
   
@@ -1269,24 +1229,7 @@ When('I fill registration form with mismatched password confirmation', async fun
 Given('I open Chrome browser', async function () {
   console.log('🔍 Launching Chrome browser...');
   
-  this.browser = await chromium.launch({
-    headless: false,
-    channel: 'chrome', // Использовать установленный Chrome
-    args: [
-      '--disable-blink-features=AutomationControlled',
-      '--disable-web-security',
-      '--disable-features=VizDisplayCompositor',
-      '--no-first-run',
-      '--disable-extensions'
-    ]
-  });
-
-  this.context = await this.browser.newContext({
-    viewport: { width: 1920, height: 1080 },
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-  });
-
-  this.page = await this.context.newPage();
+  await initBrowserThroughPool(this);
   await this.page.goto('https://parabank.parasoft.com/parabank/index.htm');
   
   console.log('✅ Chrome browser launched successfully');
@@ -1340,24 +1283,7 @@ Given('I open Safari browser', async function () {
 Given('I open Edge browser', async function () {
   console.log('🔍 Launching Edge browser...');
   
-  this.browser = await chromium.launch({
-    headless: false,
-    channel: 'msedge', // Использовать установленный Edge
-    args: [
-      '--disable-blink-features=AutomationControlled',
-      '--disable-web-security',
-      '--disable-features=VizDisplayCompositor',
-      '--no-first-run',
-      '--disable-extensions'
-    ]
-  });
-
-  this.context = await this.browser.newContext({
-    viewport: { width: 1920, height: 1080 },
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0'
-  });
-
-  this.page = await this.context.newPage();
+  await initBrowserThroughPool(this);
   await this.page.goto('https://parabank.parasoft.com/parabank/index.htm');
   
   console.log('✅ Edge browser launched successfully');

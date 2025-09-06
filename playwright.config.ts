@@ -6,10 +6,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './features',
-  fullyParallel: false, // Sequential execution to avoid detection
+  fullyParallel: false, // Let Cucumber manage parallelism
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
-  workers: 1, // Single worker to avoid parallel detection
+  workers: 1, // Playwright single worker since Cucumber handles parallelism
   reporter: [
     ['html'],
     ['json', { outputFile: 'reports/test-results.json' }]
