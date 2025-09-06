@@ -937,21 +937,6 @@ Then('registration should complete successfully', async function () {
   }
   
   expect(isSuccessful).toBe(true);
-  
-  // Check current URL after registration
-  const currentUrl = this.page!.url();
-  console.log(`📍 After registration, current URL: ${currentUrl}`);
-  
-  // Check if user is already logged in after registration
-  const isAlreadyLoggedIn = currentUrl.includes('overview.htm') || currentUrl.includes('accounts');
-  if (isAlreadyLoggedIn) {
-    console.log('✅ User automatically logged in after registration');
-    this.userAlreadyLoggedIn = true;
-  } else {
-    console.log('ℹ️ User not automatically logged in, will need manual login');
-    this.userAlreadyLoggedIn = false;
-  }
-  
   console.log('✅ Registration completed successfully');
 });
 
@@ -959,91 +944,45 @@ Then('I should be able to login with new credentials', async function () {
   console.log('🔐 Testing login with new credentials...');
   
   if (!this.registeredUser) {
-    console.log('⚠️ No registered user data found, skipping login test');
-    return;
+    throw new Error('No registered user data found');
   }
   
   console.log(`🔐 Testing login for user: ${this.registeredUser.username}`);
   
-  try {
-    // Navigate to homepage and check what we see
-    await this.page!.goto('https://parabank.parasoft.com/parabank/index.htm', { waitUntil: 'networkidle' });
+  // Navigate to homepage
+  await this.page!.goto('https://parabank.parasoft.com/parabank/index.htm');
+  
+  // Check if login form is visible (user might already be logged in after registration)
+  const usernameField = await this.page!.locator('input[name="username"]').isVisible({ timeout: 3000 });
+  const passwordField = await this.page!.locator('input[name="password"]').isVisible({ timeout: 3000 });
+  
+  if (!usernameField || !passwordField) {
+    // Check if already logged in
+    const logoutLink = await this.page!.locator('a[href*="logout"]').isVisible({ timeout: 3000 });
+    const accountsMenu = await this.page!.locator('#leftPanel').isVisible({ timeout: 3000 });
     
-    console.log(`📍 After navigation to homepage, current URL: ${this.page!.url()}`);
-    
-    // Check if login form is visible
-    const usernameField = await this.page!.locator('input[name="username"]').isVisible({ timeout: 3000 });
-    const passwordField = await this.page!.locator('input[name="password"]').isVisible({ timeout: 3000 });
-    
-    console.log(`📝 Username field visible: ${usernameField}`);
-    console.log(`📝 Password field visible: ${passwordField}`);
-    
-    if (!usernameField || !passwordField) {
-      console.log('🔍 Login fields not visible - checking if already logged in...');
-      
-      // Check for logout link (indicates user is logged in)
-      const logoutLink = await this.page!.locator('a[href*="logout"]').isVisible({ timeout: 3000 });
-      const logoutText = await this.page!.getByText('Log Out', { exact: false }).isVisible({ timeout: 3000 });
-      const accountsMenu = await this.page!.locator('#leftPanel').isVisible({ timeout: 3000 });
-      const welcomeMessage = await this.page!.getByText(`Welcome ${this.registeredUser.username}`, { exact: false }).isVisible({ timeout: 3000 });
-      
-      console.log(`🔍 Logout link visible: ${logoutLink}`);
-      console.log(`🔍 Logout text visible: ${logoutText}`);
-      console.log(`🔍 Accounts menu visible: ${accountsMenu}`);
-      console.log(`🔍 Welcome message visible: ${welcomeMessage}`);
-      
-      if (logoutLink || logoutText || accountsMenu || welcomeMessage) {
-        console.log('✅ User is already logged in after registration - no need for manual login!');
-        console.log('✅ Login verification successful');
-        return;
-      } else {
-        console.log('🔄 Trying to refresh page and close/reopen browser context...');
-        
-        // Close current browser context and create new one
-        await this.context!.close();
-        
-        this.context = await this.browser!.newContext({
-          viewport: { width: 1920, height: 1080 },
-          userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-        });
-        
-        this.page = await this.context.newPage();
-        
-        // Navigate again
-        await this.page.goto('https://parabank.parasoft.com/parabank/index.htm', { waitUntil: 'networkidle' });
-        console.log('🔄 Reopened browser context and navigated to homepage');
-      }
+    if (logoutLink || accountsMenu) {
+      console.log('✅ User is already logged in after registration - no need for manual login!');
+      console.log('✅ Login verification successful');
+      return;
     }
+  }
+  
+  // If login form is visible, perform login
+  if (usernameField && passwordField) {
+    await this.page!.fill('input[name="username"]', this.registeredUser.username);
+    await this.page!.fill('input[name="password"]', this.registeredUser.password);
+    await this.page!.click('input[value="Log In"]');
+    await this.page!.waitForTimeout(2000);
     
-    // Now try to login with the new context
-    const usernameFieldNew = await this.page!.locator('input[name="username"]').isVisible({ timeout: 3000 });
-    const passwordFieldNew = await this.page!.locator('input[name="password"]').isVisible({ timeout: 3000 });
+    const finalUrl = this.page!.url();
+    const loginSuccess = finalUrl.includes('overview.htm') || finalUrl.includes('accounts');
     
-    console.log(`📝 After browser restart - Username field visible: ${usernameFieldNew}`);
-    console.log(`📝 After browser restart - Password field visible: ${passwordFieldNew}`);
-    
-    if (usernameFieldNew && passwordFieldNew) {
-      console.log('🔐 Login fields now visible, attempting login...');
-      
-      await this.page!.fill('input[name="username"]', this.registeredUser.username);
-      await this.page!.fill('input[name="password"]', this.registeredUser.password);
-      await this.page!.click('input[value="Log In"]');
-      
-      await this.page!.waitForTimeout(2000);
-      const finalUrl = this.page!.url();
-      console.log(`📍 After login attempt, current URL: ${finalUrl}`);
-      
-      const loginSuccess = finalUrl.includes('overview.htm') || finalUrl.includes('accounts');
-      console.log(`✅ Login successful: ${loginSuccess}`);
+    if (loginSuccess) {
+      console.log('✅ Login verification successful');
     } else {
-      console.log('⚠️ Login fields still not visible after browser restart');
+      throw new Error('Login failed with new credentials');
     }
-    
-    console.log('✅ Login test completed successfully');
-    
-  } catch (error) {
-    console.log(`⚠️ Login test encountered issue: ${(error as Error).message || error}`);
-    console.log('✅ Continuing - registration was successful');
   }
 });
 
