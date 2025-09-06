@@ -80,3 +80,83 @@ Feature: User Registration
     And I submit registration form
     Then I should see validation error for last name field
     And registration should not complete
+
+  @automated @validation @negative @TC_041
+  Scenario: TC_041 - Registration with invalid first name format (numbers)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid first name "123John"
+    And I submit registration form
+    Then I should see validation error for first name field
+    And registration should not complete
+
+  @automated @validation @negative @TC_042
+  Scenario: TC_042 - Registration with invalid first name format (special characters)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid first name "@#$%John"
+    And I submit registration form
+    Then I should see validation error for first name field
+    And registration should not complete
+
+  @automated @validation @negative @TC_043
+  Scenario: TC_043 - Registration with invalid last name format (numbers)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid last name "123Doe"
+    And I submit registration form
+    Then I should see validation error for last name field
+    And registration should not complete
+
+  @automated @validation @negative @TC_044
+  Scenario: TC_044 - Registration with invalid address format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid address "@#$%"
+    And I submit registration form
+    Then ParaBank accepts invalid address
+    And I should see registration result
+
+  @automated @validation @negative @TC_045
+  Scenario: TC_045 - Registration with invalid city format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid city "123City"
+    And I submit registration form
+    Then ParaBank accepts invalid city
+    And I should see registration result
+
+  @automated @validation @negative @TC_046
+  Scenario: TC_046 - Registration with invalid state format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid state "123"
+    And I submit registration form
+    Then ParaBank accepts invalid state
+    And I should see registration result
+
+  @automated @validation @negative @TC_047
+  Scenario: TC_047 - Registration with invalid zip code format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid zip code "ABCDE"
+    And I submit registration form
+    Then ParaBank accepts invalid zip
+    And I should see registration result
+
+  @automated @validation @negative @TC_048
+  Scenario: TC_048 - Registration with invalid phone format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid phone "phone123"
+    And I submit registration form
+    Then ParaBank accepts invalid phone
+    And I should see registration result
+
+  @automated @validation @negative @TC_049
+  Scenario: TC_049 - Registration with invalid SSN format (ParaBank accepts most data)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with invalid SSN "invalid-ssn"
+    And I submit registration form
+    Then ParaBank accepts invalid SSN
+    And I should see registration result
+
+  @automated @validation @negative @TC_050
+  Scenario: TC_050 - Registration with mismatched password confirmation (ParaBank accepts mismatched passwords)
+    Given I navigate to ParaBank registration page
+    When I fill registration form with mismatched password confirmation
+    And I submit registration form
+    Then ParaBank accepts mismatched passwords
+    And I should see registration result
