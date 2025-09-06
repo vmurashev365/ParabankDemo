@@ -1,0 +1,58 @@
+{
+  "name": "parabank-bdd-automation",
+  "version": "1.0.0",
+  "description": "ParaBank BDD Test Automation with Playwright and Cucumber - 200 Test Cases",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:auth": "cucumber-js --tags '@authentication'",
+    "test:registration": "cucumber-js --tags '@registration'",
+    "test:accounts": "cucumber-js --tags '@accounts'",
+    "test:transactions": "cucumber-js --tags '@transactions'",
+    "test:api": "cucumber-js --tags '@api'",
+    "test:automated": "cucumber-js --tags '@automated'",
+    "test:manual": "cucumber-js --tags '@manual'",
+    "test:smoke": "cucumber-js --tags '@smoke'",
+    "test:critical": "cucumber-js --tags '@critical'",
+    "test:report": "npm run test -- --format html:reports/cucumber-report.html",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rimraf reports dist",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "bdd",
+    "typescript",
+    "parabank",
+    "automation",
+    "testing"
+  ],
+  "author": "QA Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.0.1",
+    "@cucumber/html-formatter": "^21.0.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
+    "@playwright/test": "^1.40.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.19.13",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.50.0",
+    "express": "^5.1.0",
+    "rimraf": "^5.0.5",
+    "socket.io": "^4.8.1",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.2.0",
+    "dotenv": "^16.3.1",
+    "playwright": "^1.40.0",
+    "winston": "^3.11.0"
+  }
+}

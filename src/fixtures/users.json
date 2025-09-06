@@ -1,0 +1,174 @@
+{
+  "standardUsers": [
+    {
+      "username": "john",
+      "password": "demo",
+      "firstName": "John",
+      "lastName": "Smith",
+      "accountBalance": 500.00,
+      "accountType": "checking",
+      "description": "Standard test user for basic functionality"
+    },
+    {
+      "username": "testuser1", 
+      "password": "TestPass123!",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "accountBalance": 0,
+      "accountType": "checking",
+      "description": "New user for registration testing"
+    },
+    {
+      "username": "richuser",
+      "password": "RichPass456!",
+      "firstName": "Richard",
+      "lastName": "Wealthy",
+      "accountBalance": 10000.00,
+      "accountType": "checking",
+      "description": "High balance user for large transaction testing"
+    },
+    {
+      "username": "pooruser",
+      "password": "PoorPass789!",
+      "firstName": "Peter",
+      "lastName": "Broke",
+      "accountBalance": 5.00,
+      "accountType": "checking",
+      "description": "Low balance user for insufficient funds testing"
+    },
+    {
+      "username": "multiuser",
+      "password": "MultiPass000!",
+      "firstName": "Maria",
+      "lastName": "Multiple",
+      "accountBalance": 100.00,
+      "accountType": "checking",
+      "description": "User with multiple accounts for transfer testing"
+    }
+  ],
+  "adminUsers": [
+    {
+      "username": "adminuser",
+      "password": "AdminPass555!",
+      "firstName": "Admin",
+      "lastName": "User",
+      "accountBalance": 99999.99,
+      "accountType": "admin",
+      "description": "Admin user for administrative functionality"
+    }
+  ],
+  "securityTestUsers": [
+    {
+      "username": "securityuser",
+      "password": "SecurePass999!",
+      "firstName": "Security",
+      "lastName": "Tester",
+      "accountBalance": 1000.00,
+      "accountType": "checking",
+      "description": "User for security testing scenarios"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "username": "wronguser",
+      "password": "demo",
+      "description": "Invalid username for negative testing"
+    },
+    {
+      "username": "john",
+      "password": "wrongpass",
+      "description": "Invalid password for negative testing"
+    },
+    {
+      "username": "",
+      "password": "",
+      "description": "Empty credentials for validation testing"
+    }
+  ],
+  "registrationData": [
+    {
+      "firstName": "Alice",
+      "lastName": "Brown",
+      "address": "789 Pine Street",
+      "city": "Boston",
+      "state": "MA",
+      "zipCode": "02101",
+      "phone": "555-111-2222",
+      "ssn": "111-22-3333",
+      "username": "alicebrown2025",
+      "password": "AlicePass123!"
+    },
+    {
+      "firstName": "Bob",
+      "lastName": "Wilson",
+      "address": "321 Elm Avenue",
+      "city": "Austin",
+      "state": "TX", 
+      "zipCode": "73301",
+      "phone": "555-444-5555",
+      "ssn": "444-55-6666",
+      "username": "bobwilson2025",
+      "password": "BobPass456!"
+    }
+  ],
+  "invalidRegistrationData": [
+    {
+      "firstName": "",
+      "lastName": "Doe",
+      "errorField": "firstName",
+      "expectedError": "First name is required"
+    },
+    {
+      "firstName": "John",
+      "lastName": "",
+      "errorField": "lastName", 
+      "expectedError": "Last name is required"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "phone": "123",
+      "errorField": "phone",
+      "expectedError": "Invalid phone format"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "ssn": "123",
+      "errorField": "ssn",
+      "expectedError": "Invalid SSN format"
+    }
+  ],
+  "securityPayloads": [
+    {
+      "type": "sqlInjection",
+      "payload": "' OR '1'='1",
+      "description": "Basic SQL injection attempt"
+    },
+    {
+      "type": "sqlInjection",
+      "payload": "\" OR \"1\"=\"1",
+      "description": "SQL injection with double quotes"
+    },
+    {
+      "type": "sqlInjection",
+      "payload": "admin' UNION SELECT * FROM users--",
+      "description": "UNION-based SQL injection"
+    },
+    {
+      "type": "xss",
+      "payload": "<script>alert('xss')</script>",
+      "description": "Basic XSS script injection"
+    },
+    {
+      "type": "xss",
+      "payload": "<img onerror='alert(1)' src='x'>",
+      "description": "Image-based XSS payload"
+    },
+    {
+      "type": "xss",
+      "payload": "javascript:alert('xss')",
+      "description": "JavaScript protocol XSS"
+    }
+  ]
+}

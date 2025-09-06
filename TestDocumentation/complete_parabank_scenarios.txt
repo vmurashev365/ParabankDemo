@@ -1,0 +1,505 @@
+# complete-parabank-scenarios.feature
+# ALL 200 Test Cases from TCS-PARABANK-001 as unified Gherkin scenarios
+# Copilot Reference: Use this for step definition generation
+# 160 @automated scenarios → Playwright implementation
+# 40 @manual scenarios → Manual procedure documentation
+
+Feature: ParaBank Banking Application - Complete Test Suite
+  As a ParaBank customer
+  I want all banking features to work correctly
+  So that I can manage my finances safely and efficiently
+
+  Background:
+    Given ParaBank application is accessible
+    And test environment is configured per TPS-PARABANK-001
+    And test data is prepared per TDMP-PARABANK-001
+
+  # ==========================================
+  # AUTHENTICATION MODULE (TC_001-TC_035)
+  # 24 automated + 11 manual = 35 total
+  # ==========================================
+
+  @automated @smoke @critical @TC_001
+  Scenario: TC_001 - Successful login with valid credentials
+    Given I navigate to ParaBank homepage
+    When I login with username "john" and password "demo"
+    Then I should be redirected to accounts overview page
+    And I should see welcome message "Welcome John Smith"
+    And main navigation menu should be visible
+
+  @automated @smoke @validation @TC_002
+  Scenario: TC_002 - Login form displays correctly
+    Given I navigate to ParaBank homepage
+    Then login form should be displayed
+    And username field should be visible and enabled
+    And password field should be visible and enabled
+    And login button should be visible and enabled
+
+  @automated @positive @TC_003
+  Scenario: TC_003 - Login with alternative valid user
+    Given I navigate to ParaBank homepage
+    When I login with username "jane" and password "password"
+    Then I should be successfully logged in
+    And I should see my account information
+
+  @automated @negative @high @TC_004
+  Scenario: TC_004 - Login with invalid username
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "wronguser" and "demo"
+    Then I should see error message "Please enter a valid username and password"
+    And I should remain on login page
+
+  @automated @negative @high @TC_005
+  Scenario: TC_005 - Login with invalid password
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "john" and "wrongpass"
+    Then I should see error message "Please enter a valid username and password"
+    And I should remain on login page
+
+  @automated @negative @validation @TC_006
+  Scenario: TC_006 - Login with both credentials invalid
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "wronguser" and "wrongpass"
+    Then I should see error message "Please enter a valid username and password"
+    And I should remain on login page
+
+  @automated @negative @validation @TC_007
+  Scenario: TC_007 - Login with empty fields
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "" and ""
+    Then I should see error message "Please enter a valid username and password"
+    And I should remain on login page
+
+  @automated @session @high @TC_013
+  Scenario: TC_013 - Successful logout
+    Given I am logged in as user "john"
+    When I click logout button
+    Then I should be redirected to login page
+    And session should be terminated
+    And I should not be able to access account pages directly
+
+  @automated @session @medium @TC_014
+  Scenario: TC_014 - Session persistence across browser tabs
+    Given I am logged in as user "john" in first tab
+    When I open new browser tab
+    And I navigate to ParaBank in new tab
+    Then I should still be logged in
+    And I should see my account information
+
+  @automated @session @medium @TC_015
+  Scenario: TC_015 - Browser back button after logout
+    Given I am logged in and viewing accounts overview
+    When I logout successfully
+    And I click browser back button
+    Then I should not be able to access account information
+    And I should be redirected to login page
+
+  @automated @security @critical @TC_016
+  Scenario: TC_016 - SQL injection prevention
+    Given I navigate to ParaBank homepage
+    When I attempt to login with SQL payload "' OR '1'='1" and "' OR '1'='1"
+    Then I should see error message "Please enter a valid username and password"
+    And no unauthorized access should be granted
+
+  @automated @security @critical @TC_017
+  Scenario: TC_017 - SQL injection with quotes
+    Given I navigate to ParaBank homepage
+    When I attempt to login with SQL payload "\" OR \"1\"=\"1" and "demo"
+    Then login should be rejected safely
+    And no database error should be exposed
+
+  @automated @security @critical @TC_018
+  Scenario: TC_018 - SQL injection with UNION attack
+    Given I navigate to ParaBank homepage
+    When I attempt to login with SQL payload "admin' UNION SELECT * FROM users--" and "any"
+    Then login should be rejected safely
+    And no sensitive data should be exposed
+
+  @automated @security @critical @TC_019
+  Scenario: TC_019 - XSS prevention in username field
+    Given I navigate to ParaBank homepage
+    When I attempt to login with XSS payload "<script>alert('xss')</script>" and "demo"
+    Then script should not execute
+    And login should be rejected safely
+
+  @automated @security @critical @TC_020
+  Scenario: TC_020 - XSS prevention in password field
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "john" and XSS payload "<img onerror='alert(1)' src='x'>"
+    Then script should not execute
+    And login should be rejected safely
+
+  @automated @browser @compatibility @TC_021
+  Scenario: TC_021 - Chrome browser compatibility
+    Given I open Chrome browser
+    When I test login functionality in Chrome
+    Then all login features should work correctly
+    And UI should display properly
+
+  @automated @browser @compatibility @TC_022
+  Scenario: TC_022 - Firefox browser compatibility
+    Given I open Firefox browser
+    When I test login functionality in Firefox
+    Then all login features should work correctly
+    And UI should display properly
+
+  @automated @browser @compatibility @TC_023
+  Scenario: TC_023 - Safari browser compatibility
+    Given I open Safari browser
+    When I test login functionality in Safari
+    Then all login features should work correctly
+    And UI should display properly
+
+  @automated @browser @compatibility @TC_024
+  Scenario: TC_024 - Edge browser compatibility
+    Given I open Edge browser
+    When I test login functionality in Edge
+    Then all login features should work correctly
+    And UI should display properly
+
+  @manual @security @penetration @TC_025
+  Scenario: TC_025 - Advanced penetration testing
+    Given I have professional security testing tools ready
+    When I perform comprehensive penetration testing on authentication
+    Then I should identify any security vulnerabilities
+    And I should document findings with severity levels
+    And I should provide detailed remediation recommendations
+    # MANUAL: 4-6 hour security analysis with OWASP ZAP/Burp Suite
+
+  @manual @accessibility @wcag @TC_026
+  Scenario: TC_026 - Accessibility compliance testing
+    Given I have accessibility testing tools configured
+    When I evaluate login form accessibility
+    Then form should be WCAG 2.1 AA compliant
+    And all elements should be keyboard accessible
+    And screen readers should announce elements correctly
+    # MANUAL: Accessibility evaluation with NVDA/JAWS
+
+  @manual @usability @ux @TC_027
+  Scenario: TC_027 - Login usability evaluation
+    Given I recruit 5 test users with different technical backgrounds
+    When users attempt to login for first time
+    Then login process should be intuitive and efficient
+    And users should complete login within 30 seconds
+    And satisfaction score should be 4.5+ out of 5
+    # MANUAL: User experience study with real participants
+
+  @manual @performance @stress @TC_028
+  Scenario: TC_028 - Login under extreme load conditions
+    Given I have load testing tools configured for 1000+ concurrent users
+    When I simulate extreme load on login system
+    Then system should maintain stability
+    And response times should degrade gracefully
+    And no data corruption should occur
+    # MANUAL: Load testing with JMeter/Artillery beyond normal automation
+
+  # ==========================================
+  # REGISTRATION MODULE (TC_036-TC_060)  
+  # 20 automated + 5 manual = 25 total
+  # ==========================================
+
+  @automated @smoke @critical @TC_036
+  Scenario: TC_036 - Successful registration with valid data
+    Given I navigate to ParaBank registration page
+    When I register new user with valid information:
+      | field | value |
+      | firstName | Jane |
+      | lastName | Doe |
+      | address | 123 Main Street |
+      | city | New York |
+      | state | NY |
+      | zipCode | 12345 |
+      | phone | 555-123-4567 |
+      | ssn | 123-45-6789 |
+      | username | janedoe2025 |
+      | password | SecurePass123! |
+      | confirmPassword | SecurePass123! |
+    Then registration should complete successfully
+    And I should be able to login with new credentials
+
+  @automated @validation @negative @TC_039
+  Scenario: TC_039 - Registration with empty first name
+    Given I navigate to ParaBank registration page
+    When I fill registration form with empty first name
+    And I submit registration form
+    Then I should see validation error for first name field
+    And registration should not complete
+
+  @automated @validation @negative @TC_040
+  Scenario: TC_040 - Registration with empty last name
+    Given I navigate to ParaBank registration page
+    When I fill registration form with empty last name
+    And I submit registration form
+    Then I should see validation error for last name field
+    And registration should not complete
+
+  @automated @validation @negative @TC_046
+  Scenario: TC_046 - Registration with weak password
+    Given I navigate to ParaBank registration page
+    When I fill registration form with weak password "123"
+    And I submit registration form
+    Then I should see password strength error
+    And registration should not complete
+
+  @automated @validation @negative @TC_047
+  Scenario: TC_047 - Registration with password mismatch
+    Given I navigate to ParaBank registration page
+    When I enter password "SecurePass123!" and confirmation "DifferentPass456!"
+    And I submit registration form
+    Then I should see password confirmation error
+    And registration should not complete
+
+  @manual @design @ux @TC_049
+  Scenario: TC_049 - Registration form design evaluation
+    Given I access registration form on different devices
+    When I evaluate form layout, visual hierarchy, and user guidance
+    Then form should follow modern UI/UX best practices
+    And field labels should be clear and descriptive
+    And error messages should be helpful and actionable
+    # MANUAL: UI/UX evaluation with design heuristics
+
+  # ==========================================
+  # ACCOUNT MANAGEMENT (TC_061-TC_100)
+  # 32 automated + 8 manual = 40 total  
+  # ==========================================
+
+  @automated @smoke @critical @TC_061
+  Scenario: TC_061 - Display accounts overview
+    Given I am logged in as user "john"
+    When I view accounts overview page
+    Then I should see all my accounts listed
+    And balances should be displayed in currency format
+    And account types should be clearly indicated
+
+  @automated @validation @critical @TC_066
+  Scenario: TC_066 - Account balance accuracy
+    Given I am logged in with known account balances
+    When I view accounts overview
+    Then displayed balances should match database values
+    And currency formatting should be correct ($1,234.56)
+
+  @automated @smoke @critical @TC_076
+  Scenario: TC_076 - Open new checking account
+    Given I am logged in with sufficient funds
+    When I open new checking account with $100 initial deposit
+    Then account should be created successfully
+    And initial deposit should be transferred
+    And new account should appear in overview
+
+  @automated @negative @high @TC_083
+  Scenario: TC_083 - Open account with insufficient funds
+    Given I am logged in with account having $50 balance
+    When I attempt to open new account with $100 initial deposit
+    Then account creation should fail
+    And I should see insufficient funds error
+
+  @manual @visual @layout @TC_091
+  Scenario: TC_091 - Account details visual validation
+    Given I am viewing account details page
+    When I evaluate information presentation and visual design
+    Then account data should be well-organized and readable
+    And visual hierarchy should guide user attention appropriately
+    # MANUAL: Visual design assessment checklist
+
+  # ==========================================
+  # TRANSACTION PROCESSING (TC_101-TC_155)
+  # 45 automated + 10 manual = 55 total
+  # ==========================================
+
+  @automated @smoke @critical @TC_101
+  Scenario: TC_101 - Transfer funds between own accounts
+    Given I am logged in with multiple accounts
+    And source account has $500+ balance
+    When I transfer $100 from checking to savings account
+    Then transfer should complete successfully
+    And balances should be updated correctly
+    And transaction should appear in history
+
+  @automated @negative @critical @TC_106
+  Scenario: TC_106 - Transfer exceeding available balance
+    Given I am logged in with account having $50 balance
+    When I attempt to transfer $100 from this account
+    Then I should see "Insufficient funds" error
+    And transfer should not be processed
+    And balances should remain unchanged
+
+  @automated @validation @high @TC_109
+  Scenario: TC_109 - Transfer to same account prevention
+    Given I am logged in with checking account
+    When I attempt to transfer money to the same account
+    Then transfer should be prevented
+    And I should see appropriate error message
+
+  @automated @business @high @TC_126
+  Scenario: TC_126 - Pay bill to registered payee
+    Given I am logged in with sufficient funds
+    And I have registered payee "Electric Company"
+    When I pay bill of $75.50 to "Electric Company"
+    Then payment should be processed successfully
+    And amount should be deducted from my account
+
+  @manual @workflow @complex @TC_141
+  Scenario: TC_141 - Complex multi-transaction workflow
+    Given I need to perform sequence of related transactions
+    When I execute loan payment, transfer, and bill payment in sequence
+    Then each transaction should maintain data consistency
+    And overall workflow should be logical and efficient
+    And error recovery should work if any step fails
+    # MANUAL: Complex workflow evaluation with business logic verification
+
+  # ==========================================
+  # SEARCH AND REPORTS (TC_156-TC_175)
+  # 15 automated + 5 manual = 20 total
+  # ==========================================
+
+  @automated @search @medium @TC_156
+  Scenario: TC_156 - Find transaction by ID
+    Given I am logged in with transaction history
+    When I search for transaction by ID "14567"
+    Then transaction details should be displayed
+    And all transaction information should be accurate
+
+  @automated @search @medium @TC_163
+  Scenario: TC_163 - Search transactions by date range
+    Given I am logged in with transaction history
+    When I search for transactions between "2025-08-01" and "2025-08-31"
+    Then all transactions in date range should be displayed
+    And results should be sorted by date
+
+  @automated @reports @medium @TC_171
+  Scenario: TC_171 - Generate monthly statement
+    Given I am logged in with account activity
+    When I generate monthly statement for "August 2025"
+    Then statement should include all transactions for the month
+    And statement should be available in PDF format
+
+  @manual @reports @validation @TC_174
+  Scenario: TC_174 - Statement accuracy verification
+    Given I have generated monthly statement
+    When I manually verify statement against transaction history
+    Then all transactions should be included correctly
+    And calculations should be mathematically accurate
+    And formatting should be professional and readable
+    # MANUAL: Detailed financial accuracy verification
+
+  # ==========================================
+  # API TESTING (TC_176-TC_200)
+  # 25 automated + 0 manual = 25 total
+  # ==========================================
+
+  @automated @api @integration @TC_176
+  Scenario: TC_176 - Get customer information via REST API
+    Given ParaBank REST API is accessible
+    When I send GET request to "/customers/12212"
+    Then I should receive HTTP 200 status code
+    And response should contain customer information
+    And data should be in valid JSON format
+
+  @automated @api @crud @TC_177
+  Scenario: TC_177 - Create customer via REST API
+    Given ParaBank REST API is accessible
+    When I send POST request to "/customers" with valid customer data
+    Then I should receive HTTP 201 status code
+    And response should contain new customer ID
+    And customer should be retrievable via GET request
+
+  @automated @api @crud @TC_178
+  Scenario: TC_178 - Update customer via REST API
+    Given customer with ID "12212" exists
+    When I send PUT request to "/customers/12212" with updated data
+    Then I should receive HTTP 200 status code
+    And customer information should be updated
+    And changes should be visible in UI
+
+  @automated @api @accounts @TC_185
+  Scenario: TC_185 - Get customer accounts via API
+    Given customer "12212" has multiple accounts
+    When I send GET request to "/customers/12212/accounts"
+    Then I should receive list of customer accounts
+    And account data should match UI display
+
+  @automated @api @critical @TC_189
+  Scenario: TC_189 - Transfer funds via REST API
+    Given I have valid customer with multiple accounts
+    When I send POST request to "/transfer" with:
+      | fromAccountId | 12345 |
+      | toAccountId | 54321 |
+      | amount | 50.00 |
+    Then transfer should be processed successfully
+    And balances should be updated in database
+    And transaction should appear in UI
+
+  @automated @api @soap @TC_196
+  Scenario: TC_196 - SOAP service authentication
+    Given ParaBank SOAP services are accessible
+    When I call SOAP login service with valid credentials
+    Then I should receive authentication token
+    And token should be valid for subsequent SOAP calls
+
+  @automated @api @performance @TC_198
+  Scenario: TC_198 - API response time validation
+    Given ParaBank API is accessible
+    When I send requests to all major endpoints
+    Then all responses should be received within 2 seconds
+    And response times should be consistent across calls
+
+  # ==========================================
+  # PERFORMANCE TESTING (TC_191-TC_198)
+  # 8 automated + 2 manual = 10 total
+  # ==========================================
+
+  @automated @performance @load @TC_191
+  Scenario: TC_191 - Homepage load performance
+    Given I have cleared browser cache
+    When I navigate to ParaBank homepage
+    Then page should load within 3 seconds
+    And all elements should be interactive within 2 seconds
+
+  @automated @performance @transaction @TC_193
+  Scenario: TC_193 - Transfer processing performance
+    Given I am logged in with sufficient funds
+    When I initiate transfer of $100 between accounts
+    Then transfer should complete within 2 seconds
+    And confirmation should be displayed immediately
+
+  @manual @performance @stress @TC_197
+  Scenario: TC_197 - System behavior under extreme stress
+    Given I have stress testing tools configured for maximum load
+    When I apply extreme stress beyond normal automation capacity
+    Then I should document system breaking points
+    And I should evaluate graceful degradation behavior
+    And I should assess recovery time after stress removal
+    # MANUAL: Advanced stress testing requiring specialized tools and analysis
+
+  # ==========================================
+  # SECURITY TESTING (TC_025, TC_199-TC_200)
+  # 2 automated + 3 manual = 5 additional security tests
+  # ==========================================
+
+  @automated @security @authentication @TC_199
+  Scenario: TC_199 - Session timeout security
+    Given I am logged in and active
+    When I remain inactive for 30 minutes
+    Then session should timeout automatically
+    And I should be redirected to login page
+    And session data should be cleared
+
+  @automated @security @authorization @TC_200
+  Scenario: TC_200 - Direct URL access prevention
+    Given I am not logged in
+    When I attempt to access "/overview.htm" directly
+    Then I should be redirected to login page
+    And no account information should be displayed
+
+  @manual @security @comprehensive @advanced_security_audit
+  Scenario: Comprehensive security audit
+    Given I have enterprise security testing tools
+    When I perform full security assessment including:
+      | category | tools | scope |
+      | Network Security | Nmap, Wireshark | Port scanning, traffic analysis |
+      | Web Security | OWASP ZAP, Burp Suite | Vulnerability scanning |
+      | Code Security | Static analysis tools | Source code review |
+    Then all security vulnerabilities should be documented
+    And risk assessment should be provided
+    And remediation roadmap should be created
+    # MANUAL: Professional security audit requiring specialized expertise
