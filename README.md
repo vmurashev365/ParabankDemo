@@ -17,14 +17,19 @@
 
 ### Quick Setup
 ```bash
-# 1. Configure email notifications
-cp .env.example .env
-# Edit .env with your email credentials
+# 1. Check email configuration
+npm run config:check
 
-# 2. Start automated nightly testing
+# 2. Configure email notifications (if needed)
+# Edit .env with real Gmail credentials (see EMAIL_SETUP_GUIDE.md)
+
+# 3. Test email sending
+npm run email:test
+
+# 4. Start automated nightly testing
 npm run automation:start
 
-# 3. Or run tests immediately  
+# 5. Or run tests immediately  
 npm run automation:run
 ```
 
@@ -93,6 +98,11 @@ npm run automation:start             # Start nightly scheduler (2:00 AM daily)
 npm run automation:run               # Execute tests immediately with email report
 npm run automation:test              # Test system (5-second delay)
 npm run automation:status            # Check scheduler status
+
+# 📧 Email Configuration & Testing
+npm run config:check                 # Check email configuration
+npm run email:test                   # Test email sending functionality
+```
 
 # 📊 Advanced Reporting
 npm run test:allure                  # Run tests with Allure reporting

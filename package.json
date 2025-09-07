@@ -25,6 +25,8 @@
     "automation:run": "npm run automation run",
     "automation:test": "npm run automation test",
     "automation:status": "npm run automation status",
+    "email:test": "ts-node test-email-sending.ts",
+    "config:check": "ts-node check-email-config.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "clean": "rimraf reports dist",
