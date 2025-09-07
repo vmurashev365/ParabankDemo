@@ -61,7 +61,7 @@ export class EmailReporter {
     return `${status} ParaBank Nightly Tests - ${rate}% Success Rate (${results.passedScenarios}/${results.totalScenarios})`;
   }
 
-  private generateHTMLReport(results: TestResults): string {
+  public generateHTMLReport(results: TestResults): string {
     const statusIcon = results.successRate >= 95 ? '✅' : results.successRate >= 80 ? '⚠️' : '❌';
     const statusColor = results.successRate >= 95 ? '#28a745' : results.successRate >= 80 ? '#ffc107' : '#dc3545';
 
