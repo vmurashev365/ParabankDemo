@@ -1,17 +1,43 @@
 # ParaBank Unified Test Framework v3.0
 
-🎉 **Production-Ready** automated testing framework for ParaBank application using Playwright, TypeScript, and Cucumber BDD.
+🎉 **Production-Ready** automated testing framework for ParaBank application with **Automated Nightly Testing** and **Allure Reporting**.
 
 ## 🏆 Framework Achievements
 
 - **✅ 99% Success Rate**: 127/128 scenarios passing
-- **✅ Production Ready**: Enterprise-grade stability and performance
+- **✅ Production Ready**: Enterprise-grade stability and performance  
 - **✅ Complete Coverage**: All critical ParaBank functionality automated
 - **✅ Security Validated**: SQL injection, XSS, and session management testing
 - **✅ Cross-Browser**: Chrome, Edge, Safari compatibility (Firefox pending)
 - **✅ Parallel Execution**: 3 concurrent browser instances with resource pooling
+- **🌙 Automated Nightly Testing**: Scheduled execution with email notifications
+- **📊 Advanced Reporting**: Allure integration with interactive dashboards
 
-## 📋 Project Overview
+## 🌙 Automated Test Execution
+
+### Quick Setup
+```bash
+# 1. Configure email notifications
+cp .env.example .env
+# Edit .env with your email credentials
+
+# 2. Start automated nightly testing
+npm run automation:start
+
+# 3. Or run tests immediately  
+npm run automation:run
+```
+
+### Automation Features
+- **🕐 Scheduled Execution**: Daily at 2:00 AM Moscow Time
+- **📧 Email Notifications**: Results sent to `vmurashev@gmail.com`  
+- **📊 Allure Reports**: Interactive HTML dashboards
+- **🔄 Continuous Monitoring**: Automatic failure detection and alerts
+- **🎯 Zero Maintenance**: Fully autonomous operation
+
+[� **Complete Automation Setup Guide**](./AUTOMATION_SETUP.md)
+
+## �📋 Project Overview
 
 - **Total Test Cases**: 200+ (unified architecture)
 - **Automated Scenarios**: 127 working, 1 pending (Firefox)
@@ -19,6 +45,7 @@
 - **Execution Time**: ~4-5 minutes (parallel execution)
 - **Framework**: Playwright + Cucumber + TypeScript + BrowserPoolManager
 - **Architecture**: Unified test suite with intelligent resource management
+- **Reporting**: Allure + HTML + Email notifications
 
 ## 🚀 Quick Start
 
@@ -32,7 +59,7 @@ npm install
 npx playwright install
 ```
 
-### Run Tests
+### Manual Test Execution
 ```bash
 # 🚀 Unified Test Suite (Recommended)
 npm test                              # Complete unified test execution
@@ -57,6 +84,22 @@ npx cucumber-js --parallel 3                # Maximum parallel execution
 
 # Generate HTML report
 npm run test:report
+```
+
+### 🌙 Automated Test Execution Commands
+```bash
+# 🚀 Automation System
+npm run automation:start             # Start nightly scheduler (2:00 AM daily)
+npm run automation:run               # Execute tests immediately with email report
+npm run automation:test              # Test system (5-second delay)
+npm run automation:status            # Check scheduler status
+
+# 📊 Advanced Reporting
+npm run test:allure                  # Run tests with Allure reporting
+npm run test:nightly                 # Run nightly test profile
+npm run test:playwright              # Run Playwright tests with Allure
+npm run reports:generate             # Generate Allure reports from results
+npm run reports:open                 # Open Allure report in browser
 ```
 
 ## ⚡ Performance Features
