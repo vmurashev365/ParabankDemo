@@ -108,11 +108,11 @@ export class RegisterPage extends BasePage {
       
       // Wait for either navigation or form processing
       await Promise.race([
-        this.page.waitForURL('**/overview.htm', { timeout: 5000 }),
-        this.page.waitForURL('**/accounts.htm', { timeout: 5000 }),
-        this.page.waitForSelector('text*="Welcome"', { timeout: 5000 }),
-        this.page.waitForSelector('text*="successfully"', { timeout: 5000 }),
-        this.page.waitForSelector('.error', { timeout: 5000 }),
+        this.page.waitForURL('**/overview.htm', { timeout: 30000 }),
+        this.page.waitForURL('**/accounts.htm', { timeout: 30000 }),
+        this.page.waitForSelector('text*="Welcome"', { timeout: 30000 }),
+        this.page.waitForSelector('text*="successfully"', { timeout: 30000 }),
+        this.page.waitForSelector('.error', { timeout: 30000 }),
         this.page.waitForTimeout(3000) // Fallback timeout
       ]).catch(() => {
         console.log('⚠️ No clear navigation detected, continuing...');

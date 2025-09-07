@@ -1,0 +1,439 @@
+# 📋 Инструкция по оптимизации Feature файлов для Copilot Sonnet 4 (v2.0)
+
+## Контекст задачи
+Ты - эксперт по автоматизации тестирования и оптимизации Gherkin/Cucumber Feature файлов. Твоя задача - проанализировать и оптимизировать существующие Feature файлы для тестирования ParaBank приложения, включая complex business scenarios, performance testing и hybrid API+UI тесты.
+
+## Входные данные
+- 4 Feature файла: `authentication.feature`, `registration.feature`, `account-management.feature`, `advanced-security-tests.feature`
+- Общее количество сценариев: 72
+- Проблемы: дублирование кода, избыточные тесты, неоптимальная структура, отсутствие E2E и performance тестов
+
+## Цели оптимизации
+1. Сократить количество сценариев на 40-50% без потери покрытия
+2. Устранить дублирование кода на 70%
+3. Улучшить читаемость и поддерживаемость
+4. Сократить время выполнения тестов на 50%
+5. **NEW:** Добавить поддержку complex business flows
+6. **NEW:** Интегрировать performance метрики
+7. **NEW:** Обеспечить API+UI hybrid testing
+
+## Правила оптимизации
+
+### 1-8. [Предыдущие правила остаются без изменений]
+
+### 9. Complex Business Scenarios оптимизация
+**Правило:** Бизнес-сценарии с множественными шагами структурируй через композицию и state machines.
+
+#### 9.1 Pattern для сложных транзакционных flows
+```gherkin
+@business_flow @e2e @critical
+Feature: Complex Banking Transaction Flow
+
+  @TC_FLOW_001 @state_machine
+  Scenario: Multi-step money transfer with verification
+    Given I execute complex transaction flow:
+      """
+      FLOW_DEFINITION:
+        name: international_transfer_with_compliance
+        actors: [sender, receiver, compliance_system]
+        states: [initiated, verified, approved, executed, completed]
+        rollback: enabled
+      """
+    When I perform sequential operations:
+      | Step | Actor   | Action                    | Validation                  | State      |
+      | 1    | sender  | initiate_transfer($5000)  | balance >= amount          | initiated  |
+      | 2    | system  | verify_compliance         | AML_check_passed           | verified   |
+      | 3    | system  | calculate_fees            | fee = $25                  | verified   |
+      | 4    | sender  | approve_with_2FA          | OTP_validated              | approved   |
+      | 5    | system  | execute_transfer          | transaction_id_generated   | executed   |
+      | 6    | system  | send_notifications        | email_and_sms_sent        | completed  |
+    Then transaction should complete with state "completed"
+    And audit trail should contain all 6 steps
+    And rollback should be available for 24 hours
+```
+
+#### 9.2 Business Rules Engine Integration
+```gherkin
+@business_rules @complex @TC_BR_001
+Scenario Outline: Loan approval with dynamic business rules
+    Given business rules engine configured:
+      """yaml
+      rules:
+        - id: credit_score_check
+          condition: credit_score >= 650
+          weight: 0.4
+        - id: debt_to_income
+          condition: dti_ratio < 0.43
+          weight: 0.3
+        - id: employment_history
+          condition: employment_months >= 24
+          weight: 0.2
+        - id: account_history
+          condition: account_age_months >= 12
+          weight: 0.1
+      """
+    When I apply for loan with profile:
+      | credit_score | dti_ratio | employment_months | account_age_months |
+      | <score>     | <dti>     | <employment>      | <account_age>      |
+    Then loan decision should be "<decision>"
+    And decision score should be <expected_score>
+    And applicable rules should be "<rules_applied>"
+    
+    Examples:
+      | score | dti  | employment | account_age | decision  | expected_score | rules_applied           |
+      | 750   | 0.35 | 36         | 24          | approved  | 1.0           | all_rules_passed        |
+      | 620   | 0.45 | 12         | 6           | rejected  | 0.2           | only_credit_partial     |
+      | 680   | 0.40 | 30         | 18          | review    | 0.7           | three_rules_passed      |
+```
+
+#### 9.3 Saga Pattern for Distributed Transactions
+```gherkin
+@saga_pattern @distributed @TC_SAGA_001
+Scenario: Distributed transaction with compensation
+    Given I configure saga transaction:
+      """json
+      {
+        "saga_id": "transfer_with_investment",
+        "steps": [
+          {
+            "service": "account_service",
+            "action": "debit",
+            "compensation": "credit",
+            "timeout": 5000
+          },
+          {
+            "service": "investment_service", 
+            "action": "buy_stocks",
+            "compensation": "sell_stocks",
+            "timeout": 10000
+          },
+          {
+            "service": "notification_service",
+            "action": "send_confirmation",
+            "compensation": "send_cancellation",
+            "timeout": 3000
+          }
+        ]
+      }
+      """
+    When I execute saga with failure at step <failure_step>
+    Then compensation should trigger from step <failure_step>
+    And system should reach consistent state
+    And audit log should show compensation trail
+    
+    Examples:
+      | failure_step | compensation_sequence        |
+      | 2           | compensate_1                 |
+      | 3           | compensate_2, compensate_1   |
+```
+
+### 10. Performance Testing Scenarios
+
+#### 10.1 Integrated Performance Metrics
+```gherkin
+@performance @load @TC_PERF_001
+Feature: Performance Testing Integration
+
+  Background:
+    Given performance monitoring enabled:
+      """yaml
+      metrics:
+        - response_time_p95: 2000ms
+        - response_time_p99: 5000ms
+        - throughput_min: 100tps
+        - error_rate_max: 0.1%
+        - cpu_usage_max: 80%
+        - memory_usage_max: 85%
+      """
+
+  @load_test @graduated
+  Scenario Outline: Graduated load testing
+    Given system baseline metrics captured
+    When I apply <load_type> load pattern:
+      | Parameter        | Value           |
+      | users           | <users>         |
+      | ramp_up         | <ramp_up>       |
+      | duration        | <duration>      |
+      | think_time      | <think_time>    |
+    Then performance should meet SLA:
+      | Metric          | Threshold      | Actual         |
+      | response_p95    | <p95_limit>    | @measured_p95  |
+      | response_p99    | <p99_limit>    | @measured_p99  |
+      | throughput      | <tps_min>      | @measured_tps  |
+      | error_rate      | <error_max>    | @measured_err  |
+    And resource utilization should be within limits
+    
+    Examples:
+      | load_type  | users | ramp_up | duration | think_time | p95_limit | p99_limit | tps_min | error_max |
+      | baseline   | 10    | 1m      | 5m       | 2s         | 500ms     | 1000ms    | 50      | 0.01%     |
+      | normal     | 100   | 5m      | 15m      | 2s         | 1000ms    | 2000ms    | 100     | 0.1%      |
+      | peak       | 500   | 10m     | 30m      | 1s         | 2000ms    | 5000ms    | 200     | 0.5%      |
+      | stress     | 1000  | 15m     | 60m      | 0.5s       | 5000ms    | 10000ms   | 300     | 1%        |
+```
+
+#### 10.2 Endurance Testing Pattern
+```gherkin
+@performance @endurance @TC_PERF_002
+Scenario: Long-running endurance test with memory leak detection
+    Given I configure endurance test:
+      """yaml
+      duration: 8h
+      users: 50
+      monitoring:
+        - memory_growth_rate: 10MB/hour max
+        - gc_frequency: normal
+        - connection_pool: stable
+        - thread_count: stable
+      """
+    When I run endurance test with checkpoints every 30 minutes
+    Then system should maintain stability:
+      | Hour | Memory Usage | GC Count | Response Time | Error Rate |
+      | 1    | < 2GB       | < 100    | < 1000ms      | < 0.1%     |
+      | 4    | < 2.5GB     | < 400    | < 1200ms      | < 0.1%     |
+      | 8    | < 3GB       | < 800    | < 1500ms      | < 0.2%     |
+    And no memory leaks detected
+    And no thread leaks detected
+    And database connection pool stable
+```
+
+#### 10.3 Spike Testing Pattern
+```gherkin
+@performance @spike @TC_PERF_003
+Scenario: Spike testing with recovery validation
+    Given baseline load of 50 users
+    When I apply spike pattern:
+      """
+      Timeline:
+      0-5min:   50 users (baseline)
+      5-6min:   spike to 1000 users
+      6-10min:  maintain 1000 users
+      10-11min: drop to 50 users
+      11-15min: maintain 50 users (recovery)
+      """
+    Then system behavior should be:
+      | Phase        | Expected Behavior                    | Max Response Time | Error Rate |
+      | baseline     | stable performance                   | 500ms            | 0%         |
+      | spike_up     | graceful degradation                | 5000ms           | < 5%       |
+      | spike_peak   | maintain service                    | 8000ms           | < 10%      |
+      | spike_down   | quick recovery                      | 2000ms           | < 2%       |
+      | recovery     | return to baseline performance      | 500ms            | 0%         |
+    And circuit breakers should activate if needed
+    And auto-scaling should trigger appropriately
+```
+
+### 11. API + UI Hybrid Testing
+
+#### 11.1 API-First Test Pattern
+```gherkin
+@hybrid @api_ui @TC_HYBRID_001
+Feature: API and UI Hybrid Testing
+
+  Scenario: Create account via API and verify in UI
+    # API Setup Phase
+    Given I create test data via API:
+      """json
+      POST /api/v1/accounts
+      {
+        "type": "CHECKING",
+        "initial_deposit": 1000.00,
+        "owner": "testuser_{{timestamp}}"
+      }
+      """
+    And API response should contain:
+      | field          | value                    |
+      | status_code    | 201                      |
+      | account_id     | @store:new_account_id    |
+      | balance        | 1000.00                  |
+    
+    # UI Verification Phase
+    When I login to UI with "testuser_{{timestamp}}"
+    And I navigate to accounts overview
+    Then UI should display account "@new_account_id"
+    And account balance in UI should match API response
+    
+    # Hybrid Transaction Test
+    When I transfer $100 via UI to another account
+    Then I verify via API:
+      """json
+      GET /api/v1/accounts/@new_account_id/balance
+      Expected: 900.00
+      """
+    And transaction should appear in both:
+      | Channel | Validation                           |
+      | API     | GET /api/v1/transactions?account=@id |
+      | UI      | Transaction history shows -$100      |
+```
+
+#### 11.2 UI Action with API Validation Pattern
+```gherkin
+@hybrid @ui_api_validation @TC_HYBRID_002
+Scenario Outline: UI actions with real-time API validation
+    Given I set up API monitoring for account "<account_id>"
+    When I perform UI action "<ui_action>"
+    Then API should detect change within <timeout>ms:
+      """
+      Polling Config:
+        endpoint: <api_endpoint>
+        method: <method>
+        interval: 100ms
+        max_attempts: <max_polls>
+      """
+    And API response should confirm:
+      | Validation          | Expected              |
+      | status_change       | <expected_status>     |
+      | data_consistency    | <data_validation>     |
+      | event_published     | <event_name>          |
+    
+    Examples:
+      | ui_action        | api_endpoint                  | method | timeout | expected_status | event_name          |
+      | transfer_funds   | /api/v1/accounts/{id}/balance | GET    | 2000    | updated        | TRANSFER_COMPLETED  |
+      | close_account    | /api/v1/accounts/{id}/status  | GET    | 5000    | closed         | ACCOUNT_CLOSED      |
+      | update_profile   | /api/v1/users/{id}/profile    | GET    | 1000    | modified       | PROFILE_UPDATED     |
+```
+
+#### 11.3 Parallel API and UI Execution Pattern
+```gherkin
+@hybrid @parallel @TC_HYBRID_003
+Scenario: Concurrent API and UI operations
+    Given I configure parallel execution:
+      """yaml
+      threads:
+        - name: api_thread
+          operations:
+            - create_10_transactions
+            - update_account_settings
+            - generate_statement
+        - name: ui_thread
+          operations:
+            - view_transaction_history
+            - download_statement
+            - update_preferences
+      synchronization:
+        - checkpoint_1: after_transaction_creation
+        - checkpoint_2: before_statement_download
+      """
+    When I execute operations in parallel
+    Then both threads should complete successfully
+    And data consistency should be maintained:
+      | Check                  | API Result | UI Result | Match |
+      | transaction_count      | 10         | 10        | true  |
+      | latest_balance        | $X         | $X        | true  |
+      | statement_entries     | 10         | 10        | true  |
+    And race conditions should not occur
+    And deadlocks should not occur
+```
+
+#### 11.4 GraphQL + REST + UI Triple Integration
+```gherkin
+@hybrid @graphql @rest @ui @TC_HYBRID_004
+Scenario: Multi-protocol testing integration
+    # GraphQL Query Phase
+    Given I execute GraphQL query:
+      """graphql
+      query GetAccountDetails($id: ID!) {
+        account(id: $id) {
+          balance
+          transactions(last: 5) {
+            edges {
+              node {
+                id
+                amount
+                timestamp
+              }
+            }
+          }
+        }
+      }
+      """
+    And I store GraphQL response as "@graphql_data"
+    
+    # REST API Verification
+    When I verify via REST API:
+      """
+      GET /api/v1/accounts/{id}
+      GET /api/v1/accounts/{id}/transactions?limit=5
+      """
+    And I store REST response as "@rest_data"
+    
+    # UI Validation
+    Then UI should display matching data:
+      | Source   | Field                | Value                           |
+      | GraphQL  | balance              | @graphql_data.account.balance   |
+      | REST     | balance              | @rest_data.balance              |
+      | UI       | displayed_balance    | same_as_above                   |
+    And transaction lists should be identical across all three channels
+```
+
+## Структура итоговых файлов (Enhanced)
+
+```
+features/
+├── core/
+│   ├── authentication.feature
+│   └── registration.feature
+├── functional/
+│   ├── account-management.feature
+│   └── transactions.feature
+├── security/
+│   └── security-suite.feature
+├── business-flows/              # NEW
+│   ├── complex-transactions.feature
+│   ├── loan-processing.feature
+│   └── investment-flows.feature
+├── performance/                  # NEW
+│   ├── load-testing.feature
+│   ├── endurance-testing.feature
+│   └── spike-testing.feature
+├── hybrid/                       # NEW
+│   ├── api-ui-integration.feature
+│   ├── graphql-rest-ui.feature
+│   └── parallel-execution.feature
+└── shared/
+    ├── common-steps.feature
+    ├── performance-steps.feature  # NEW
+    └── api-steps.feature          # NEW
+```
+
+## Метрики успеха (Enhanced)
+- [ ] Сокращение сценариев: с 72 до ~35
+- [ ] Использование Scenario Outline: минимум 60% тестов
+- [ ] Среднее количество строк на сценарий: < 15
+- [ ] Переиспользование шагов: > 70%
+- [ ] Время выполнения: сокращение на 50%
+- [ ] **NEW:** Complex business flows coverage: 100%
+- [ ] **NEW:** Performance SLA validation: integrated
+- [ ] **NEW:** API+UI hybrid tests: минимум 20% от общего числа
+- [ ] **NEW:** Parallel execution capability: enabled
+- [ ] **NEW:** State machine patterns: implemented
+
+## Дополнительные рекомендации
+
+### Performance Testing Integration
+```yaml
+performance_profile:
+  ci_pipeline:
+    - smoke_tests: 2min
+    - performance_baseline: 5min
+    - full_regression: 30min
+  nightly:
+    - endurance_test: 8h
+    - spike_test: 1h
+  weekly:
+    - capacity_test: 4h
+    - chaos_engineering: 2h
+```
+
+### Hybrid Execution Strategy
+```yaml
+execution_strategy:
+  parallel_threads: 4
+  api_first_percentage: 30
+  ui_only_percentage: 20
+  hybrid_percentage: 50
+  synchronization_points:
+    - before_critical_validations
+    - after_data_modifications
+```
+
+---
+*Версия 2.0: Добавлена поддержка complex business scenarios, performance testing и API+UI hybrid patterns*

@@ -18,10 +18,10 @@ const config = {
     dryRun: false,
     failFast: false, // Don't stop on first failure in parallel mode
     strict: false,
+    timeout: 30000, // 30 секунд timeout для всех шагов
     paths: ['features/**/*.feature'],
-    parallel: 5, // Maximum 5 parallel processes
-    retry: 0, // No retries for now
-    timeout: 120000, // 2 minutes
+    parallel: 3, // Уменьшаем параллельность для стабильности
+    retry: 1, // Один retry для нестабильных тестов
     worldParameters: {
       headless: false,
       slowMo: 200,

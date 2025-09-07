@@ -47,8 +47,32 @@ class BrowserPoolManager {
       }
     }
 
-    // Создаем новый браузер
-    const browser = await this.createStealthBrowser();
+    // Создаем новый браузер с retry механизмом
+    let browser: Browser | undefined;
+    let attempts = 0;
+    const maxAttempts = 3;
+    
+    while (attempts < maxAttempts) {
+      try {
+        browser = await this.createStealthBrowser();
+        break;
+      } catch (error) {
+        attempts++;
+        console.log(`⚠️ Browser creation attempt ${attempts}/${maxAttempts} failed:`, error);
+        
+        if (attempts >= maxAttempts) {
+          throw new Error(`Failed to create browser after ${maxAttempts} attempts: ${error}`);
+        }
+        
+        // Ждем перед повторной попыткой
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+    
+    if (!browser) {
+      throw new Error('Failed to create browser after all retry attempts');
+    }
+    
     this.activeBrowsers.set(sessionId, browser);
     
     console.log(`✅ Created new browser for session: ${sessionId} (${this.activeBrowsers.size}/${this.maxBrowsers})`);

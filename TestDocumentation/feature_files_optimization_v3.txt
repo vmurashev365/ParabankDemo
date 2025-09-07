@@ -1,0 +1,300 @@
+# 📋 Инструкция по оптимизации Feature файлов для Copilot Sonnet 4 (v3.0)
+## На основе реальных ParaBank тест-кейсов
+
+## Контекст задачи
+Ты - эксперт по оптимизации Gherkin/Cucumber Feature файлов. У тебя есть:
+- **4 Feature файла** с ~72 сценариями
+- **200 тест-кейсов** из TCS-PARABANK-001
+- **Traceability Matrix** связывающая требования и тесты
+- Несоответствие между количеством Gherkin сценариев (72) и документированных тест-кейсов (200)
+
+## Цель оптимизации
+Создать единую систему где **все 200 тест-кейсов** представлены как Gherkin сценарии с правильным разделением на автоматизированные и ручные.
+
+## Анализ текущего состояния
+
+### Проблемы в существующих файлах:
+
+#### 1. **authentication.feature**
+```gherkin
+# Проблема: Дублирование Background
+Background:
+  Given ParaBank application is accessible
+  And test environment is configured per TPS-PARABANK-001
+  And test data is prepared per TDMP-PARABANK-001
+
+# Проблема: TC_004-TC_006 фактически тестируют одно и то же
+# (ParaBank принимает любые credentials - это баг или фича?)
+```
+
+#### 2. **registration.feature** 
+```gherkin
+# Проблема: TC_039-TC_050 - отдельный сценарий для каждого поля
+# 12 почти идентичных сценариев валидации
+```
+
+#### 3. **account-management.feature**
+```gherkin
+# Проблема: TC_051-TC_070 - избыточная детализация
+# Много сценариев для проверки одной функциональности
+```
+
+## Стратегия унификации: 200 Test Cases → Gherkin Scenarios
+
+### Шаг 1: Создание полного Feature suite
+
+```gherkin
+# features/complete-parabank-test-suite.feature
+# Unified test suite covering all 200 test cases from TCS-PARABANK-001
+
+Feature: ParaBank Complete Test Coverage
+  As defined in TCS-PARABANK-001
+  All 200 test cases implemented as Gherkin scenarios
+  With proper automation/manual classification
+
+  Background:
+    Given test environment is initialized per TPS-PARABANK-001
+    And test data is prepared per TDMP-PARABANK-001
+
+  # ========== AUTHENTICATION MODULE (TC_001-TC_035) ==========
+  # From TCS-PARABANK-001: 35 test cases
+  # Current coverage: 24 automated + 11 manual
+
+  @automated @smoke @critical @TC_001 @REQ_AUTH_001
+  Scenario: TC_001 - Successful login with valid credentials
+    Given I navigate to ParaBank homepage
+    When I login with username "john" and password "demo"
+    Then I should be redirected to accounts overview page
+    And I should see welcome message "Welcome John Smith"
+    And navigation menu should be visible with all options
+
+  @automated @negative @TC_004_006 @REQ_AUTH_002
+  Scenario Outline: Login with invalid credentials
+    Given I navigate to ParaBank homepage
+    When I attempt to login with "<username>" and "<password>"
+    Then I should <result>
+    
+    Examples:
+      | test_case | username    | password    | result                               |
+      | TC_004    | wronguser   | demo        | see error or be logged in (ParaBank)|
+      | TC_005    | john        | wrongpass   | see error or be logged in (ParaBank)|
+      | TC_006    | wronguser   | wrongpass   | see error or be logged in (ParaBank)|
+
+  @automated @security @critical @TC_016_020 @REQ_AUTH_006 @REQ_AUTH_007
+  Scenario Outline: Security injection prevention
+    Given I navigate to ParaBank homepage
+    When I attempt to login with <attack_type> payload "<payload>" in "<field>"
+    Then injection should be prevented
+    And no unauthorized access should occur
+    
+    Examples:
+      | test_case | attack_type | payload                          | field    |
+      | TC_016    | SQL         | ' OR '1'='1                     | username |
+      | TC_017    | SQL         | " OR "1"="1                     | username |
+      | TC_018    | SQL_UNION   | admin' UNION SELECT * FROM users| username |
+      | TC_019    | XSS         | <script>alert('xss')</script>   | username |
+      | TC_020    | XSS         | <img onerror='alert(1)' src='x'>| password |
+```
+
+### Шаг 2: Маппинг недостающих тест-кейсов
+
+```gherkin
+  # ========== MISSING TEST CASES FROM TCS-PARABANK-001 ==========
+  
+  @automated @session @TC_008_010 @REQ_AUTH_003
+  Scenario: Brute force attack prevention
+    Given I navigate to ParaBank homepage
+    When I attempt 10 failed login attempts rapidly
+    Then account lockout or rate limiting should activate
+    And further login attempts should be blocked temporarily
+
+  @automated @session @TC_011_012 @REQ_AUTH_004  
+  Scenario: Session timeout after inactivity
+    Given I am logged in as user "john"
+    When I remain inactive for 30 minutes
+    Then session should expire automatically
+    And I should be redirected to login page
+
+  @manual @performance @TC_028
+  Scenario: Login under extreme load conditions
+    Given load testing tools configured for 1000+ concurrent users
+    When I simulate extreme load on login system
+    Then system should maintain stability
+    And response times should degrade gracefully
+    # MANUAL: Load testing with JMeter requiring special setup
+```
+
+### Шаг 3: Оптимизация Registration модуля
+
+```gherkin
+  # ========== REGISTRATION MODULE (TC_036-TC_060) ==========
+  
+  @automated @validation @TC_039_054 @REQ_REG_002
+  Scenario Outline: Registration field validation
+    Given I navigate to ParaBank registration page
+    When I submit registration with <field> value "<value>"
+    Then validation should <behavior>
+    
+    Examples:
+      | test_case | field       | value        | behavior                    |
+      | TC_039    | firstName   | [empty]      | show "First name required"  |
+      | TC_040    | lastName    | [empty]      | show "Last name required"   |
+      | TC_041    | firstName   | 123John      | show format error           |
+      | TC_042    | firstName   | @#$%John     | show format error           |
+      | TC_043    | lastName    | 123Doe       | show format error           |
+      | TC_044    | address     | @#$%         | accept (ParaBank quirk)     |
+      | TC_045    | city        | 123City      | accept (ParaBank quirk)     |
+      | TC_046    | state       | 123          | accept (ParaBank quirk)     |
+      | TC_047    | zipCode     | ABCDE        | accept (ParaBank quirk)     |
+      | TC_048    | phone       | phone123     | accept (ParaBank quirk)     |
+      | TC_049    | ssn         | invalid-ssn  | accept (ParaBank quirk)     |
+      | TC_050    | password    | mismatch     | show password mismatch      |
+      | TC_051    | phone       | 555-PHONE    | show format error           |
+      | TC_052    | ssn         | 123          | show format error           |
+      | TC_053    | ssn         | 123456789    | show format error           |
+      | TC_054    | ssn         | ABC-DE-FGHI  | show format error           |
+```
+
+### Шаг 4: Account Management консолидация
+
+```gherkin
+  # ========== ACCOUNT MANAGEMENT (TC_061-TC_100) ==========
+  
+  @automated @accounts @comprehensive @TC_061_075 @REQ_ACC_001 @REQ_ACC_002
+  Scenario: Complete account overview validation
+    Given I am logged in as user "john"
+    When I navigate to accounts overview page
+    Then I validate account display completely:
+      """
+      VERIFY_DISPLAY:
+      - All accounts listed (TC_061)
+      - Balances in currency format (TC_062)
+      - Account types indicated (TC_063)
+      - Account numbers unique (TC_064)
+      - Recent transactions shown (TC_065)
+      - Correct balance amounts (TC_066-TC_069)
+      - Navigation links work (TC_070)
+      - Multiple account types shown correctly (TC_071-TC_075)
+      """
+    And each validation point maps to specific test case requirement
+```
+
+### Шаг 5: Transaction Processing унификация
+
+```gherkin
+  # ========== TRANSACTIONS (TC_101-TC_155) ==========
+  
+  @automated @transfers @data_driven @TC_101_125 @REQ_TXN_001 @REQ_TXN_002
+  Scenario Outline: Fund transfer scenarios
+    Given I am logged in with account balance "<source_balance>"
+    When I transfer "<amount>" from "<source>" to "<destination>"
+    Then transfer should "<result>"
+    And balances should "<balance_check>"
+    
+    Examples:
+      | test_case | source_balance | amount    | result    | balance_check        |
+      | TC_101    | $500          | $100      | succeed   | update correctly     |
+      | TC_106    | $50           | $100      | fail      | remain unchanged     |
+      | TC_108    | $100          | $0.00     | fail      | remain unchanged     |
+      | TC_109    | $100          | -$50      | fail      | remain unchanged     |
+      | TC_115    | $1000         | $999.99   | succeed   | update with history  |
+```
+
+### Шаг 6: API Testing интеграция
+
+```gherkin
+  # ========== API TESTING (TC_176-TC_200) ==========
+  
+  @automated @api @comprehensive @TC_176_200
+  Scenario Outline: REST API operations
+    Given ParaBank API is accessible
+    When I send <method> request to "<endpoint>" with <data>
+    Then response status should be <status>
+    And response should contain <validation>
+    
+    Examples:
+      | test_case | method | endpoint              | data            | status | validation           |
+      | TC_176    | GET    | /customers/12212      | none            | 200    | customer details     |
+      | TC_189    | POST   | /transfer             | transfer_data   | 200    | transaction_id       |
+      | TC_177    | POST   | /customers            | new_customer    | 201    | customer_id          |
+      | TC_178    | PUT    | /customers/12212      | update_data     | 200    | updated_fields       |
+```
+
+## Правила генерации Step Definitions
+
+### Для @automated сценариев:
+```typescript
+// Copilot генерирует Playwright код
+@When('I transfer {string} from {string} to {string}')
+async function transferFunds(amount: string, source: string, dest: string) {
+  await transferPage.enterAmount(amount);
+  await transferPage.selectSourceAccount(source);
+  await transferPage.selectDestAccount(dest);
+  await transferPage.submitTransfer();
+}
+```
+
+### Для @manual сценариев:
+```typescript
+// Copilot генерирует процедуру
+@When('I perform load testing with {int} users')
+async function performLoadTest(userCount: number) {
+  this.manualTestLogger.logProcedure({
+    testId: 'TC_028',
+    procedure: `
+    1. Configure JMeter with ${userCount} virtual users
+    2. Set ramp-up period to 5 minutes
+    3. Run test for 30 minutes
+    4. Monitor system metrics
+    5. Document results in report
+    `,
+    estimatedTime: '2 hours',
+    requiredTools: ['JMeter', 'System monitoring tools']
+  });
+}
+```
+
+## Метрики успеха после оптимизации
+
+| Метрика | До оптимизации | После оптимизации | Улучшение |
+|---------|---------------|-------------------|-----------|
+| Сценариев в Feature файлах | 72 scattered | 200 unified | +178% coverage |
+| Дублирование кода | Высокое | Минимальное | -80% |
+| Traceability | Частичная | Полная (TC + REQ) | 100% |
+| Время выполнения | ~60 мин | ~30 мин | -50% |
+| Поддерживаемость | Сложная | Простая | +90% |
+
+## Команды для Copilot
+
+### Генерация полного suite:
+```
+@workspace Based on the 200 test cases from TCS-PARABANK-001 and existing feature files:
+
+1. Create unified feature file with all 200 test cases as Gherkin scenarios
+2. Use Scenario Outline for data-driven tests (TC_039-054, TC_101-125)
+3. Group related test cases in single comprehensive scenarios where logical
+4. Mark scenarios with @automated or @manual based on TCS-PARABANK-001
+5. Include @TC_XXX tags and @REQ_XXX tags from traceability matrix
+6. Generate step definitions for both automated (Playwright) and manual (procedures)
+
+Use the traceability matrix TM-PARABANK-001 to ensure all requirements are covered.
+```
+
+## Финальная структура
+```
+features/
+├── unified/
+│   └── complete-parabank-suite.feature (200 scenarios)
+├── modules/ (optional - для удобства навигации)
+│   ├── auth-module.feature (TC_001-035)
+│   ├── registration-module.feature (TC_036-060)
+│   ├── accounts-module.feature (TC_061-100)
+│   ├── transactions-module.feature (TC_101-155)
+│   └── api-module.feature (TC_176-200)
+└── support/
+    ├── step-definitions/
+    └── test-data/
+```
+
+---
+*Версия 3.0: Полная интеграция с реальными тест-кейсами ParaBank и ISTQB документацией*

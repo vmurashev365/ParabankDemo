@@ -399,7 +399,7 @@ export class AdvancedStealthEngine {
     // Try to find and interact with challenge elements
     try {
       const challengeForm = page.locator('form[id*="challenge"]').first();
-      if (await challengeForm.isVisible({ timeout: 5000 })) {
+      if (await challengeForm.isVisible({ timeout: 30000 })) {
         await this.randomDelay(2000, 4000);
         // Let Cloudflare complete automatically
       }

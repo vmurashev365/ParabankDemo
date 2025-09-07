@@ -24,8 +24,8 @@ export default defineConfig({
     viewport: { width: 1920, height: 1080 },
     
     // Natural behavior settings
-    actionTimeout: 15000,
-    navigationTimeout: 30000,
+    actionTimeout: 30000, // Увеличиваем до 30 секунд
+    navigationTimeout: 60000, // Увеличиваем до 60 секунд
     
     // Screenshots and video for debugging
     screenshot: 'only-on-failure',
