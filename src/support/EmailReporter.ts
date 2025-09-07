@@ -33,25 +33,55 @@ export class EmailReporter {
   }
 
   async sendTestResults(results: TestResults, recipientEmail: string = 'vmurashev@gmail.com'): Promise<void> {
-    console.log('📧 Preparing test results email...');
-
-    const htmlContent = this.generateHTMLReport(results);
-    const attachments = await this.collectReportAttachments();
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER || 'parabank-automation@gmail.com',
-      to: recipientEmail,
-      subject: this.generateEmailSubject(results),
-      html: htmlContent,
-      attachments: attachments
-    };
+    console.log('📧 Preparing enhanced email with report attachments...');
 
     try {
+      // Import enhanced reporter
+      const { enhancedEmailReporter } = await import('./EnhancedEmailReporter');
+      
+      // Generate enhanced email with working attachments
+      const { html, attachments } = await enhancedEmailReporter.generateEmailWithWorkingLinks(results);
+      
+      const mailOptions = {
+        from: process.env.EMAIL_USER || 'parabank-automation@gmail.com',
+        to: recipientEmail,
+        subject: this.generateEmailSubject(results),
+        html: html,
+        attachments: attachments.map(att => ({
+          filename: att.name,
+          path: att.path,
+          contentType: att.contentType
+        }))
+      };
+
       const info = await this.transporter.sendMail(mailOptions);
-      console.log('✅ Email sent successfully:', info.messageId);
+      console.log('✅ Enhanced email sent successfully with report attachments!');
+      console.log('📧 Message ID:', info.messageId);
+      console.log('📎 Attachments included:', attachments.length);
+      
     } catch (error) {
-      console.error('❌ Error sending email:', error);
-      throw error;
+      console.error('❌ Error sending enhanced email:', error);
+      
+      // Fallback to basic email if enhanced version fails
+      console.log('🔄 Attempting fallback to basic email...');
+      const htmlContent = this.generateHTMLReport(results);
+      const basicAttachments = await this.collectReportAttachments();
+
+      const basicMailOptions = {
+        from: process.env.EMAIL_USER || 'parabank-automation@gmail.com',
+        to: recipientEmail,
+        subject: this.generateEmailSubject(results),
+        html: htmlContent,
+        attachments: basicAttachments
+      };
+
+      try {
+        const info = await this.transporter.sendMail(basicMailOptions);
+        console.log('✅ Basic email sent successfully:', info.messageId);
+      } catch (fallbackError) {
+        console.error('❌ Fallback email also failed:', fallbackError);
+        throw fallbackError;
+      }
     }
   }
 
@@ -143,12 +173,20 @@ export class EmailReporter {
 
           <div class="section">
             <h3>📄 Detailed Reports</h3>
-            <div class="links">
-              ${results.reportUrls.allure ? `<a href="${results.reportUrls.allure}" class="link-button">📊 Allure Report</a>` : ''}
-              ${results.reportUrls.playwright ? `<a href="${results.reportUrls.playwright}" class="link-button">🎭 Playwright Report</a>` : ''}
-              ${results.reportUrls.cucumber ? `<a href="${results.reportUrls.cucumber}" class="link-button">🥒 Cucumber Report</a>` : ''}
+            <div class="report-info" style="background: #e8f4fd; border: 2px solid #007bff; border-radius: 8px; padding: 20px; margin: 15px 0;">
+              <h4 style="color: #007bff; margin-top: 0;">📎 Reports Attached to This Email</h4>
+              <p style="margin: 10px 0;">All detailed test reports are attached to this email for easy access:</p>
+              <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>📊 allure-report.html</strong> - Interactive dashboard with detailed analytics</li>
+                <li><strong>🥒 cucumber-report.html</strong> - BDD scenario breakdown and step details</li>
+                <li><strong>🎭 playwright-report.html</strong> - Cross-browser test results</li>
+                <li><strong>📋 SUMMARY.md</strong> - Executive summary</li>
+              </ul>
+              <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 10px; margin: 15px 0;">
+                <strong>📖 How to view:</strong> Download the HTML files from email attachments and open them in your web browser.
+              </div>
             </div>
-            <p><em>Note: Report attachments are included with this email for offline viewing.</em></p>
+            <p><em>Note: For security reasons, report links in emails don't work directly. Please download the attached HTML files.</em></p>
           </div>
 
           <div class="section">
