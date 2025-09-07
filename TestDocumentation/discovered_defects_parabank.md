@@ -17,7 +17,9 @@
 
 During comprehensive testing of ParaBank Demo Application, multiple critical security vulnerabilities and validation defects were discovered. While ParaBank is designed as a demo/training application, these defects represent serious security flaws that would be unacceptable in a production banking system.
 
-**Total Defects Found: 7 Critical + Multiple Minor**
+**Total Defects Found: 10 Critical + Multiple Minor**
+
+*Last Updated: September 7, 2025 - Based on 152 automated test scenarios*
 
 ---
 
@@ -229,6 +231,121 @@ Generic "username already exists" message regardless of actual issue
 
 ---
 
+### DEF-008: Extended Validation Defects - Additional Format and Business Rule Violations
+**Severity:** High  
+**Priority:** P1  
+**Category:** Security - Input Validation  
+**Test Cases:** TC_051-TC_054  
+
+**Description:**
+Extended testing revealed additional validation failures beyond the original scope, including phone number and SSN format validation issues.
+
+**Affected Fields:**
+- **Phone Number:** Accepts invalid formats (`555-PHONE` instead of numeric patterns)
+- **SSN:** Accepts short SSN (`123` instead of 9 digits)
+- **SSN:** Accepts non-formatted SSN (`123456789` instead of `XXX-XX-XXXX`)
+- **SSN:** Accepts alphabetic SSN (`ABC-DE-FGHI` instead of numeric)
+
+**Steps to Reproduce:**
+1. Navigate to registration page
+2. Fill form with invalid phone format `555-PHONE`
+3. Fill SSN with invalid format (any of the above examples)
+4. Submit form
+
+**Expected Result:**
+Format validation should enforce proper patterns for phone numbers and SSN
+
+**Actual Result:**
+Invalid formats are accepted and user account is created
+
+**Impact:**
+- Data integrity violations for critical financial identifiers
+- Potential regulatory compliance issues
+- Risk of invalid customer data in banking system
+
+---
+
+### DEF-009: Session Security - Persistent Authentication Bypass
+**Severity:** Critical  
+**Priority:** P1  
+**Category:** Security - Session Management  
+**Test Cases:** TC_008-TC_015  
+
+**Description:**
+Session management allows multiple concurrent sessions and lacks proper session timeout enforcement, creating security vulnerabilities.
+
+**Security Issues:**
+- **Concurrent Sessions:** Multiple browser sessions allowed for same user
+- **Session Timeout:** No automatic logout after inactivity
+- **Session Hijacking Protection:** Insufficient session security measures
+- **Remember Me Vulnerability:** Persistent login without proper security
+
+**Steps to Reproduce:**
+1. Login to ParaBank in first browser tab
+2. Login same user in second browser tab
+3. Both sessions remain active simultaneously
+4. Leave session inactive for extended period (>30 minutes)
+5. Session remains active without timeout
+
+**Expected Result:**
+- Single session policy should be enforced
+- Sessions should timeout after inactivity
+- Proper session invalidation on new login
+
+**Actual Result:**
+- Multiple concurrent sessions allowed
+- No session timeout enforcement
+- Persistent access without security controls
+
+**Impact:**
+- Session hijacking vulnerability
+- Unauthorized persistent access
+- Violation of banking security standards
+- Risk of account compromise
+
+---
+
+### DEF-010: API Security - Insufficient Endpoint Protection
+**Severity:** High  
+**Priority:** P1  
+**Category:** Security - API Security  
+**Test Cases:** API Security Tests  
+
+**Description:**
+API endpoints lack proper authentication, authorization, and input sanitization controls.
+
+**API Vulnerabilities:**
+- **Authentication Bypass:** API endpoints accessible without proper authentication
+- **Input Sanitization:** API accepts malicious payloads without validation
+- **Rate Limiting:** No throttling or rate limiting implemented
+- **Security Headers:** Missing security headers in API responses
+
+**Steps to Reproduce:**
+1. Access ParaBank API endpoint directly
+2. Send requests without authentication
+3. Submit malicious payloads to API endpoints
+4. Analyze security headers in responses
+
+**Expected Result:**
+- API endpoints should require proper authentication
+- Input validation should sanitize all payloads
+- Rate limiting should prevent abuse
+- Security headers should be present
+
+**Actual Result:**
+- API endpoints accessible without proper controls
+- Malicious payloads processed without sanitization
+- No rate limiting enforcement
+- Missing security headers
+
+**Impact:**
+- Direct API exploitation possible
+- Data exfiltration risk
+- System compromise through API attacks
+- Violation of API security best practices
+
+---
+
 ## Minimal Validation Working Correctly
 
 ### Limited Validation Found:
@@ -243,12 +360,13 @@ These are the ONLY validation rules that function properly in the entire applica
 
 ParaBank demonstrates a complete lack of fundamental security controls expected in banking applications:
 
-1. **Authentication:** Completely bypassed
+1. **Authentication:** Completely bypassed (DEF-001)
 2. **Authorization:** Non-existent  
-3. **Session Management:** Fundamentally broken
-4. **Input Validation:** Almost entirely absent
-5. **Injection Protection:** Insufficient
-6. **Data Integrity:** Not maintained
+3. **Session Management:** Fundamentally broken (DEF-002, DEF-009)
+4. **Input Validation:** Almost entirely absent (DEF-003, DEF-008)
+5. **Injection Protection:** Insufficient (DEF-004)
+6. **API Security:** Inadequate protection (DEF-010)
+7. **Data Integrity:** Not maintained
 
 ---
 
@@ -293,4 +411,6 @@ When converting this report to formal defect format, please:
 
 This application appears to be intentionally insecure for training purposes. However, each identified defect represents a real-world security vulnerability that must be avoided in production banking systems.
 
-**Test Coverage:** All defects were discovered through systematic automated testing using Playwright + Cucumber framework with comprehensive test cases TC_001 through TC_050.
+**Test Coverage:** All defects were discovered through systematic automated testing using Playwright + Cucumber framework with comprehensive test cases TC_001 through TC_060+ including extended validation tests.
+
+**Recent Updates:** Based on 152 automated test scenarios executed with 98.68% success rate, additional security and validation defects have been identified and documented.
