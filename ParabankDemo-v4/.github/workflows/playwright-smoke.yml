@@ -1,0 +1,32 @@
+name: Playwright Smoke
+
+on:
+  push:
+    paths:
+      - 'ParabankDemo-v4/**'
+  pull_request:
+    paths:
+      - 'ParabankDemo-v4/**'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ParabankDemo-v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run smoke tag
+        run: |
+          npm run test:smoke --if-present || npx playwright test --grep @smoke

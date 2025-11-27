@@ -1,0 +1,13 @@
+{
+  "name": "parabankdemo-v4",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright + Cucumber runner for the ParaBank v4 suite",
+  "scripts": {
+    "test:smoke": "node ../node_modules/@cucumber/cucumber/bin/cucumber-js --config cucumber.v4.js --tags \"@smoke\"",
+    "test:regression": "node ../node_modules/@cucumber/cucumber/bin/cucumber-js --config cucumber.v4.js --tags \"@regression\"",
+    "test:feature:login": "node ../node_modules/@cucumber/cucumber/bin/cucumber-js --config cucumber.v4.js features/login.feature",
+    "test:security": "node ../node_modules/@cucumber/cucumber/bin/cucumber-js --config cucumber.v4.js --tags \"@security\"",
+    "test:tags": "node ../node_modules/@cucumber/cucumber/bin/cucumber-js --config cucumber.v4.js"
+  }
+}
