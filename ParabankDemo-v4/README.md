@@ -8,10 +8,31 @@ Use this guide to run the modular ParaBank v4 suite that lives entirely under `P
 - `ParabankDemo-v4/package.json` exposes npm scripts that call the shared toolchain from the workspace root while keeping v3 files untouched.
 - Run scripts either by changing into the folder (`cd ParabankDemo-v4 && npm run <script>`) or by using the `--prefix` flag from the repo root (`npm run --prefix ParabankDemo-v4 <script>`).
 
+## Base URL and environments
+
+By default, the v4 suite points to the public ParaBank host:
+
+- `BasePage` uses `PARABANK_BASE_URL` or `BASE_URL` if set.
+- If neither is provided, it falls back to `https://parabank.parasoft.com`.
+
+For local Docker ParaBank, always set:
+
+```bash
+export PARABANK_BASE_URL="http://localhost:8080"
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:PARABANK_BASE_URL = "http://localhost:8080"
+```
+
+Run all examples below in the same shell where `PARABANK_BASE_URL` is configured to avoid accidentally using the public instance.
+
 ## Smoke suite
 
 ```bash
-npm run --prefix ParabankDemo-v4 test:smoke
+PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:smoke
 ```
 
 - Executes every scenario tagged `@smoke`, including the aggregated flows in `ParabankDemo-v4/features/smoke.feature` (login + accounts overview, quick transfer, and utility bill payment).
@@ -20,13 +41,13 @@ npm run --prefix ParabankDemo-v4 test:smoke
 Equivalent npx command:
 
 ```bash
-npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@smoke"
+PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@smoke"
 ```
 
 ## Full regression
 
 ```bash
-npm run --prefix ParabankDemo-v4 test:regression
+PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:regression
 ```
 
 - Runs all `@regression`-tagged scenarios across the v4 feature set, including the end-to-end journey in `features/regression.feature`, transfer/bill pay/account validations, and any security or registration checks marked as regression.
@@ -35,20 +56,20 @@ npm run --prefix ParabankDemo-v4 test:regression
 Equivalent npx command:
 
 ```bash
-npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@regression"
+PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@regression"
 ```
 
 ## Single feature focus
 
 ```bash
-npm run --prefix ParabankDemo-v4 test:feature:login
+PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:feature:login
 ```
 
 - Targets only `ParabankDemo-v4/features/login.feature`, which is helpful while iterating on login steps or debugging authentication flows.
 - Swap `login.feature` for another path when you need to isolate a different module:
 
 ```bash
-npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js ParabankDemo-v4/features/accounts.feature
+PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js ParabankDemo-v4/features/accounts.feature
 ```
 
 ## Tagged runs (custom selections)
@@ -56,19 +77,19 @@ npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js ParabankDemo-v4/features
 - Security-focused validation:
 
 ```bash
-npm run --prefix ParabankDemo-v4 test:security
+PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:security
 ```
 
 - Ad-hoc tag expressions: use the generic script and append any tags supported by Cucumber:
 
 ```bash
-npm run --prefix ParabankDemo-v4 test:tags -- --tags "@security and not @wip"
+PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:tags -- --tags "@security and not @wip"
 ```
 
 - Direct npx alternative:
 
 ```bash
-npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@security"
+PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@security"
 ```
 
 All commands above reference only the v4 feature files and step definitions, keeping the legacy v3 suite untouched while still allowing both suites to coexist in the same repository.
