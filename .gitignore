@@ -15,6 +15,22 @@ screenshots/
 videos/
 test-results/
 playwright-report/
+allure-results/
+allure-report/
+reports/allure-report/
+reports/allure-results/
+
+# Playwright artifacts
+*.trace.zip
+.ms-playwright/
+playwright/.cache/
+blob-report/
+browser-data/
+
+# Email demo artifacts
+*.eml
+email-attachments/
+ethereal-logs/
 
 # Environment files
 .env.local
