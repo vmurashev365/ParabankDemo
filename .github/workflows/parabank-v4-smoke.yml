@@ -1,0 +1,41 @@
+name: ParaBank banking smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ParabankDemo-v4/**'
+      - '.github/workflows/parabank-v4-smoke.yml'
+  pull_request:
+    paths:
+      - 'ParabankDemo-v4/**'
+      - '.github/workflows/parabank-v4-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ParabankDemo-v4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ParabankDemo-v4/package-lock.json
+      - run: npm ci
+      - run: npm run type-check
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run docker:start
+      - name: Wait for the login page
+        run: curl --fail --silent --show-error --retry 30 --retry-all-errors --retry-delay 2 http://127.0.0.1:8081/parabank/index.htm --output /dev/null
+      - run: npm run test:smoke
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: parabank-smoke-report
+          path: ParabankDemo-v4/reports/cucumber/report.html
+          if-no-files-found: warn

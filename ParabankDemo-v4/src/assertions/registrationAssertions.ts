@@ -7,5 +7,5 @@ export async function expectRegistrationSuccess(page: Page): Promise<void> {
 }
 
 export async function expectValidationError(page: Page, message: string): Promise<void> {
-  await expect(page.getByText(new RegExp(message, 'i'))).toBeVisible();
+  await expect(page.getByText(message, { exact: true })).toBeVisible();
 }

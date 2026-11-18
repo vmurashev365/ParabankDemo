@@ -27,7 +27,7 @@ export class NavbarComponent extends BaseComponent {
     return this.root.locator('a[href*="billpay.htm"]');
   }
 
-  private get logoutLink(): Locator {
+  get logoutLink(): Locator {
     // Matches the "Log Out" link
     return this.root.locator('a[href*="logout.htm"]');
   }

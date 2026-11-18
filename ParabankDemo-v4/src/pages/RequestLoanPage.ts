@@ -22,7 +22,7 @@ export class RequestLoanPage extends BasePage {
     return this.page.getByRole('button', { name: /apply now/i });
   }
 
-  async goto(path = 'https://parabank.parasoft.com/parabank/requestloan.htm'): Promise<void> {
+  async goto(path = '/parabank/requestloan.htm'): Promise<void> {
     await super.goto(path);
   }
 

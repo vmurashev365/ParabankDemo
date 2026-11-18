@@ -23,7 +23,8 @@ export function extractInputsAndButtons(html: string): LocatorCandidate[] {
   let match: RegExpExecArray | null;
   while ((match = inputRegex.exec(html))) {
     const attrs = match[2];
-    const name = getAttribute(attrs, 'name') || getAttribute(attrs, 'id') || getAttribute(attrs, 'aria-label') || 'input';
+    const name =
+      getAttribute(attrs, 'name') || getAttribute(attrs, 'id') || getAttribute(attrs, 'aria-label') || 'input';
     const label = getAttribute(attrs, 'aria-label') || getAttribute(attrs, 'placeholder') || name;
     const role = deriveRole(match[1], attrs);
     const selector = buildSelector({ role, label, name });
@@ -43,7 +44,7 @@ export function extractInputsAndButtons(html: string): LocatorCandidate[] {
 }
 
 function getAttribute(attrs: string, attribute: string): string | undefined {
-  const regex = new RegExp(`${attribute}=['\"]([^'\"]+)['\"]`, 'i');
+  const regex = new RegExp(`${attribute}=['"]([^'"]+)['"]`, 'i');
   const result = regex.exec(attrs);
   return result?.[1];
 }

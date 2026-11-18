@@ -1,35 +1,55 @@
-Feature: Funds Transfer Workflows
+Feature: Transfers between customer accounts
 
-  Background:
+  @regression @transfers
+  Scenario Outline: An internal transfer debits and credits the same amount
+    Given user is viewing the accounts overview
+    And the customer records the balance of account "<fromAccount>"
+    And the customer records the balance of account "<toAccount>"
+    When user navigates to the "Transfer Funds" page via the navbar
+    And user transfers "<amount>" from account "<fromAccount>" to account "<toAccount>"
+    Then the transfer receipt shows "<amount>" from "<fromAccount>" to "<toAccount>"
+    When user returns to the accounts overview
+    Then account "<fromAccount>" has a balance change of "-<amount>" USD
+    And account "<toAccount>" has a balance change of "<amount>" USD
+
+    @smoke
+    Examples: Checking to savings
+      | fromAccount | toAccount | amount |
+      | 54321       | 13344     | 25.37  |
+
+    Examples: One cent in the opposite direction
+      | fromAccount | toAccount | amount |
+      | 13344       | 54321     | 0.01   |
+
+  @regression @transfers
+  Scenario Outline: Customer performs two transfers in a row
     Given user is on the transfer page
+    When user transfers "<firstAmount>" from account "<fromAccount>" to account "<toAccount>"
+    Then the transfer receipt shows "<firstAmount>" from "<fromAccount>" to "<toAccount>"
+    When user navigates to the "Transfer Funds" page via the navbar
+    And user transfers "<secondAmount>" from account "<fromAccount>" to account "<toAccount>"
+    Then the transfer receipt shows "<secondAmount>" from "<fromAccount>" to "<toAccount>"
 
-  @smoke @transfers
-  Scenario: Quick transfer between default accounts
-    When user transfers "100.00" between accounts
-    Then transfer should be successful
-
-  @regression @transfers
-  Scenario: Customer selects explicit accounts for transfer
-    When user transfers "50.00" from account "13344" to account "13344"
-    Then transfer should be successful
-
-  @regression @negative
-  Scenario: Large transfer is processed successfully
-    When user transfers "5000.00" above balance
-    Then transfer should be successful
+    Examples: Two transfers from savings
+      | fromAccount | toAccount | firstAmount | secondAmount |
+      | 13344       | 54321     | 10.00       | 15.00        |
 
   @regression @transfers
-  Scenario: Customer transfers funds between two different accounts
-    When user transfers "25.00" from account "13344" to account "13344"
-    Then transfer should be successful
+  Scenario Outline: ParaBank issues a receipt for a large same-account transfer
+    Given user is on the transfer page
+    When user transfers "<amount>" from account "<account>" to account "<account>"
+    Then the transfer receipt shows "<amount>" from "<account>" to "<account>"
 
-  @regression @transfers
-  Scenario: Customer performs two transfers in a row
-    When user transfers "10.00" between accounts
-    And user transfers "15.00" between accounts
-    Then transfer should be successful
+    Examples: Same source and destination
+      | account | amount  |
+      | 13344   | 5000.00 |
 
-  @regression @negative
-  Scenario: Transfer fails when amount is empty
-    When user transfers "" between accounts
-    Then an error message should be shown
+  @regression @negative @transfers
+  Scenario Outline: Transfer requires an amount
+    Given user is on the transfer page
+    When user transfers "" from account "<fromAccount>" to account "<toAccount>"
+    Then the transfer form shows "The amount cannot be empty."
+
+    Examples: Checking to savings
+      | fromAccount | toAccount |
+      | 54321       | 13344     |

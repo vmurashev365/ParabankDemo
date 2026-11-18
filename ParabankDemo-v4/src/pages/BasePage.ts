@@ -1,7 +1,7 @@
-import type { Locator, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 // Base URL should point to the server root (no trailing /parabank)
-const DEFAULT_BASE_URL = 'https://parabank.parasoft.com';
+const DEFAULT_BASE_URL = 'http://127.0.0.1:8081';
 
 function resolveBaseUrl(): string {
   // Prefer explicit v4 env, then fall back to shared v3-style BASE_URL
@@ -11,10 +11,6 @@ function resolveBaseUrl(): string {
 
 export abstract class BasePage {
   constructor(protected page: Page) {}
-
-  async waitUntilVisible(locator: Locator): Promise<void> {
-    await locator.waitFor({ state: 'visible' });
-  }
 
   async goto(path: string): Promise<void> {
     const baseUrl = resolveBaseUrl().replace(/\/$/, '');

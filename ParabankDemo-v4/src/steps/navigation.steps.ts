@@ -1,24 +1,16 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { NavbarComponent } from '../components/NavbarComponent';
-import { ensureAuthenticated, clearAuthenticationCache } from './stepHelpers';
+import type { V4World } from '../support/world';
+import { signIn } from './stepHelpers';
 import { expectAccountOverviewVisible } from '../assertions/accountAssertions';
 
-const getNavbar = (world: any): NavbarComponent => {
-  if (!world.page) {
-    throw new Error('Playwright page instance is not available on the World context.');
-  }
-  return world.navbar ?? (world.navbar = NavbarComponent.create(world.page));
-};
-
-Given('user has access to the main navigation', async function () {
-  await ensureAuthenticated(this);
-  await expect(getNavbar(this).container).toBeVisible();
+Given('user has access to the main navigation', async function (this: V4World) {
+  await signIn(this);
+  await expect(this.navbar.container).toBeVisible();
 });
 
-When('user navigates to the {string} page via the navbar', async function (destination: string) {
-  await ensureAuthenticated(this);
-  const navbar = getNavbar(this);
+When('user navigates to the {string} page via the navbar', async function (this: V4World, destination: string) {
+  const navbar = this.navbar;
   const target = destination.trim().toLowerCase();
 
   if (target === 'accounts' || target === 'accounts overview') {
@@ -38,23 +30,20 @@ When('user navigates to the {string} page via the navbar', async function (desti
 
   if (target === 'logout' || target === 'log out') {
     await navbar.logout();
-    clearAuthenticationCache(this);
     return;
   }
 
   throw new Error(`Unknown navigation destination: ${destination}`);
 });
 
-When('user logs out via the navbar', async function () {
-  await ensureAuthenticated(this);
-  await getNavbar(this).logout();
-  clearAuthenticationCache(this);
+When('user logs out via the navbar', async function (this: V4World) {
+  await this.navbar.logout();
 });
 
-Then('accounts overview page should be displayed', async function () {
+Then('accounts overview page should be displayed', async function (this: V4World) {
   await expectAccountOverviewVisible(this.page);
 });
 
-Then('user should see the login page again', async function () {
+Then('user should see the login page again', async function (this: V4World) {
   await expect(this.page).toHaveURL(/index\.htm/i);
 });

@@ -1,51 +1,47 @@
-import { setWorldConstructor, setDefaultTimeout, World } from '@cucumber/cucumber';
-import { chromium, firefox, webkit, type Browser, type BrowserContext, type Page } from '@playwright/test';
+import { setDefaultTimeout, setWorldConstructor, World } from '@cucumber/cucumber';
+import { chromium, firefox, webkit, type Browser, type Page } from '@playwright/test';
+import { AccountsPage } from '../pages/AccountsPage';
+import { BillPayPage } from '../pages/BillPayPage';
+import { LoginPage } from '../pages/LoginPage';
+import { RegisterPage } from '../pages/RegisterPage';
+import { TransferPage } from '../pages/TransferPage';
+import { NavbarComponent } from '../components/NavbarComponent';
 
-export interface V4WorldParameters {
-  headless?: boolean;
-  browser?: 'chromium' | 'firefox' | 'webkit';
+interface BrowserSettings {
+  browser: 'chromium' | 'firefox' | 'webkit';
+  headless: boolean;
 }
 
-export class V4World extends World<V4WorldParameters> {
-  browser?: Browser;
-  context?: BrowserContext;
-  page?: Page;
+export class V4World extends World<BrowserSettings> {
+  private browser?: Browser;
+  page!: Page;
+  accounts!: AccountsPage;
+  billPay!: BillPayPage;
+  login!: LoginPage;
+  registration!: RegisterPage;
+  transfer!: TransferPage;
+  navbar!: NavbarComponent;
 
-  constructor(options: any) {
-    super(options);
-  }
+  balancesBefore = new Map<string, number>();
+  payment?: { payee: string; amount: string; fromAccount: string };
 
-  async initPage(): Promise<Page> {
-    if (this.page) return this.page;
-
-    const browserName = this.parameters.browser ?? 'chromium';
-    const headless = this.parameters.headless ?? true;
-
-    switch (browserName) {
-      case 'firefox':
-        this.browser = await firefox.launch({ headless });
-        break;
-      case 'webkit':
-        this.browser = await webkit.launch({ headless });
-        break;
-      case 'chromium':
-      default:
-        this.browser = await chromium.launch({ headless });
-        break;
-    }
-
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-    return this.page;
+  async initPage(): Promise<void> {
+    const browserType = { chromium, firefox, webkit }[this.parameters.browser];
+    if (!browserType) throw new Error(`Unknown PARABANK_BROWSER: ${this.parameters.browser}`);
+    this.browser = await browserType.launch({ headless: this.parameters.headless });
+    this.page = await this.browser.newPage();
+    this.accounts = new AccountsPage(this.page);
+    this.billPay = new BillPayPage(this.page);
+    this.login = new LoginPage(this.page);
+    this.registration = new RegisterPage(this.page);
+    this.transfer = new TransferPage(this.page);
+    this.navbar = NavbarComponent.create(this.page);
   }
 
   async cleanup(): Promise<void> {
-    await this.page?.close().catch(() => undefined);
-    await this.context?.close().catch(() => undefined);
-    await this.browser?.close().catch(() => undefined);
+    await this.browser?.close();
   }
 }
 
-// Temporarily lower Cucumber step timeout to 10s for faster feedback
-setDefaultTimeout(10_000);
 setWorldConstructor(V4World);
+setDefaultTimeout(30_000);

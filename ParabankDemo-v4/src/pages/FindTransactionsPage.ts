@@ -41,7 +41,7 @@ export class FindTransactionsPage extends BasePage {
     return this.tableComponent;
   }
 
-  async goto(path = 'https://parabank.parasoft.com/parabank/findtrans.htm'): Promise<void> {
+  async goto(path = '/parabank/findtrans.htm'): Promise<void> {
     await super.goto(path);
   }
 

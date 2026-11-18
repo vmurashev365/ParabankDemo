@@ -1,34 +1,19 @@
-import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
+const js = require('@eslint/js');
+const parser = require('@typescript-eslint/parser');
+const ts = require('@typescript-eslint/eslint-plugin');
 
-const disallowXPathSelectorRule = {
-  selector: "CallExpression[callee.property.name='locator'] Literal[value=/^\\/\\//]",
-  message: 'Avoid raw XPath selectors; prefer semantic Playwright locators (TODO: replace with parser-aware rule).',
-};
-
-export default [
-  js.configs.recommended,
+module.exports = [
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['dist/**', 'node_modules/**'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: process.cwd(),
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-    },
+    files: ['src/**/*.ts'],
+    languageOptions: { parser },
+    plugins: { '@typescript-eslint': ts },
     rules: {
-      'no-unused-vars': 'error',
-      'prefer-const': 'error',
+      ...js.configs.recommended.rules,
+      'no-undef': 'off', // TypeScript checks globals and type names.
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      'max-lines-per-file': ['error', { max: 400, skipBlankLines: true, skipComments: true }],
-      'no-restricted-syntax': ['warn', disallowXPathSelectorRule],
+      'prefer-const': 'error',
     },
   },
 ];

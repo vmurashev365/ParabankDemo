@@ -18,7 +18,7 @@ export class OpenNewAccountPage extends BasePage {
     return this.page.getByRole('button', { name: /open new account/i });
   }
 
-  async goto(path = 'https://parabank.parasoft.com/parabank/openaccount.htm'): Promise<void> {
+  async goto(path = '/parabank/openaccount.htm'): Promise<void> {
     await super.goto(path);
   }
 

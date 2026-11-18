@@ -1,95 +1,56 @@
-# ParaBank Demo v4 Test Execution
+# ParaBank Banking QA Automation Platform
 
-Use this guide to run the modular ParaBank v4 suite that lives entirely under `ParabankDemo-v4/`. All commands assume dependencies are already installed at the repository root (`npm install`) so that `../node_modules` contains Playwright, Cucumber, and ts-node.
+This portfolio project tests customer banking workflows against a local ParaBank instance. Cucumber describes the operations, Playwright drives the browser, and TypeScript checks the test code.
 
-## Project-specific runner
+## Banking workflows
 
-- `ParabankDemo-v4/cucumber.v4.js` scopes Cucumber to `ParabankDemo-v4/features/**/*.feature` and loads only the v4 step definitions in `ParabankDemo-v4/src/steps/**/*.ts`.
-- `ParabankDemo-v4/package.json` exposes npm scripts that call the shared toolchain from the workspace root while keeping v3 files untouched.
-- Run scripts either by changing into the folder (`cd ParabankDemo-v4 && npm run <script>`) or by using the `--prefix` flag from the repo root (`npm run --prefix ParabankDemo-v4 <script>`).
+| Workflow          | What the test verifies                                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Internal transfer | Move $25.37 from checking to savings. Verify both account numbers and the amount on the receipt, then return to the overview and compare both balances with their opening values in cents. |
+| Bill payment      | Compare the payee, amount and funding account on the receipt with the submitted payment. Reject mismatched payee account numbers and verify the funding balance stays unchanged.           |
+| Customer access   | Sign in, open an account, sign out and return to the login screen. Registration scenarios exercise the form with synthetic customer details.                                               |
 
-## Base URL and environments
+Start with the [transfer scenario](features/transfer.feature), its [transfer steps](src/steps/transfer.steps.ts), the [balance checks](src/steps/accounts.steps.ts) and the [accounts page](src/pages/AccountsPage.ts) to follow the money through the UI.
 
-By default, the v4 suite points to the public ParaBank host:
+## Quick start
 
-- `BasePage` uses `PARABANK_BASE_URL` or `BASE_URL` if set.
-- If neither is provided, it falls back to `https://parabank.parasoft.com`.
+Use Node.js 22 and Docker Compose. Run these commands from `ParabankDemo-v4/`.
 
-For local Docker ParaBank, always set:
-
-```bash
-export PARABANK_BASE_URL="http://localhost:8080"
+```sh
+npm ci
+npx playwright install chromium
+npm run docker:start
 ```
 
-On Windows PowerShell:
+Open the [local ParaBank login page](http://127.0.0.1:8081/parabank/index.htm). Once it is ready, run the smoke scenarios.
 
-```powershell
-$env:PARABANK_BASE_URL = "http://localhost:8080"
+```sh
+npm run test:smoke
 ```
 
-Run all examples below in the same shell where `PARABANK_BASE_URL` is configured to avoid accidentally using the public instance.
+Open [the Cucumber HTML report](reports/cucumber/report.html) after the run. Balance checks attach the opening balance and the expected and observed closing balances in cents. Failed browser scenarios attach a screenshot to the report. Each run replaces the local report.
 
-## Smoke suite
+## Running tests
 
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:smoke
-```
+| Command                                                      | Selection                                                                          |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `npm run test:smoke`                                         | Customer login, registration, accounts, transfers and bill payment                 |
+| `npm run test:regression`                                    | Tagged regression scenarios, including validation and multi-step customer journeys |
+| `npm run test:feature:login`                                 | Login feature only                                                                 |
+| `npm run test:tags -- --tags "@transfers"`                   | One domain                                                                         |
+| `npm run test:dry-run`                                       | Check step bindings without opening a browser                                      |
+| `npm run type-check`, `npm run lint`, `npm run format:check` | TypeScript, ESLint and Prettier                                                    |
+| `npm run docker:stop`                                        | Stop this project's local ParaBank container                                       |
 
-- Executes every scenario tagged `@smoke`, including the aggregated flows in `ParabankDemo-v4/features/smoke.feature` (login + accounts overview, quick transfer, and utility bill payment).
-- Ideal for pre-merge gating because it covers the highest-signal UI journeys without touching negative/security paths.
+## Test data and environment
 
-Equivalent npx command:
+The pinned Docker image supplies the demo customer `john` / `demo`, checking account `54321` and savings account `13344`. Each scenario starts with a fresh browser session. The customer and accounts persist between scenarios, so Cucumber runs them sequentially. Payments and transfers post to these demo accounts. Use a dedicated instance and keep other runs off it while comparing balances.
 
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@smoke"
-```
+The default host is `http://127.0.0.1:8081`. To use another test instance, set `PARABANK_BASE_URL` to its origin. Override `PARABANK_USERNAME` and `PARABANK_PASSWORD` for a customer with the required fixture accounts. `PARABANK_HEADLESS=false` shows the browser. `PARABANK_BROWSER` selects chromium, firefox or webkit after the matching Playwright browser is installed.
 
-## Full regression
+## Known findings
 
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:regression
-```
+- **Empty transfer amount.** On the pinned image, submitting an empty amount leaves the field validation message hidden. The regression expects the visible message and reports the failure.
+- **Step binding.** One example row in the original security feature contains embedded quotation marks and produces an undefined step during a full dry run.
 
-- Runs all `@regression`-tagged scenarios across the v4 feature set, including the end-to-end journey in `features/regression.feature`, transfer/bill pay/account validations, and any security or registration checks marked as regression.
-- Use this nightly or before releasing to ensure every functional area still passes.
-
-Equivalent npx command:
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@regression"
-```
-
-## Single feature focus
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:feature:login
-```
-
-- Targets only `ParabankDemo-v4/features/login.feature`, which is helpful while iterating on login steps or debugging authentication flows.
-- Swap `login.feature` for another path when you need to isolate a different module:
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js ParabankDemo-v4/features/accounts.feature
-```
-
-## Tagged runs (custom selections)
-
-- Security-focused validation:
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:security
-```
-
-- Ad-hoc tag expressions: use the generic script and append any tags supported by Cucumber:
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npm run --prefix ParabankDemo-v4 test:tags -- --tags "@security and not @wip"
-```
-
-- Direct npx alternative:
-
-```bash
-PARABANK_BASE_URL=http://localhost:8080 npx cucumber-js --config ParabankDemo-v4/cucumber.v4.js --tags "@security"
-```
-
-All commands above reference only the v4 feature files and step definitions, keeping the legacy v3 suite untouched while still allowing both suites to coexist in the same repository.
+See the [coding guide](docs/CODING_STANDARDS.md) for the conventions used to extend the suite.

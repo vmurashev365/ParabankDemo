@@ -1,38 +1,29 @@
-import type { Locator, Page } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { usdToCents } from '../support/money';
 
 export class AccountsPage extends BasePage {
-  constructor(page: Page) {
-    super(page);
-  }
-
-  get accountsOverviewTable(): Locator {
-    // ParaBank uses a table with id "accountTable" for the overview
+  get overviewTable(): Locator {
     return this.page.locator('#accountTable');
   }
 
-  get accountRows(): Locator {
-    return this.accountsOverviewTable.getByRole('row');
-  }
-
   get accountLinks(): Locator {
-    return this.page.getByRole('link', { name: /\d{4,}/ });
+    return this.overviewTable.getByRole('link', { name: /^\d+$/ });
   }
 
-  get overviewTable(): Locator {
-    return this.accountsOverviewTable;
+  private accountLink(number: string): Locator {
+    return this.overviewTable.getByRole('link', { name: number, exact: true });
   }
 
-  async goto(path = '/parabank/overview.htm'): Promise<void> {
-    await super.goto(path);
+  async openAccountDetails(number: string): Promise<void> {
+    await this.accountLink(number).click();
   }
 
-  async getAccountRows(): Promise<string[]> {
-    return this.accountRows.allTextContents();
-  }
-
-  async openAccountDetails(accountNumber: string): Promise<void> {
-    const target = new RegExp(accountNumber.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-    await this.page.getByRole('link', { name: target }).click();
+  async balanceInCents(number: string): Promise<number> {
+    const row = this.overviewTable
+      .getByRole('row')
+      .filter({ has: this.page.getByRole('link', { name: number, exact: true }) });
+    // The header order is Account, Balance, Available Amount.
+    return usdToCents(await row.getByRole('cell').nth(1).innerText());
   }
 }

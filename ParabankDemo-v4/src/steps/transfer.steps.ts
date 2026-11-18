@@ -1,54 +1,28 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { TransferFlow } from '../flows/TransferFlow';
-import { expectTransferError, expectTransferSuccess } from '../assertions/transferAssertions';
-import { ensureAuthenticated } from './stepHelpers';
-import { expectTextContains } from '../assertions/uiAssertions';
+import { expect } from '@playwright/test';
+import { expectTransferReceipt } from '../assertions/transferAssertions';
+import type { V4World } from '../support/world';
+import { signIn } from './stepHelpers';
 
-const getTransferFlow = (world: any): TransferFlow => world.transferFlow ?? (world.transferFlow = new TransferFlow(world.page));
-
-Given('user is logged in', async function () {
-  await ensureAuthenticated(this);
+Given('user is on the transfer page', async function (this: V4World) {
+  await signIn(this);
+  await this.navbar.gotoTransfer();
 });
 
-Given('user is logged in as {string} with password {string}', async function (username: string, password: string) {
-  await ensureAuthenticated(this, username, password);
-});
+When(
+  'user transfers {string} from account {string} to account {string}',
+  async function (this: V4World, amount: string, from: string, to: string) {
+    await this.transfer.transfer(amount, from, to);
+  },
+);
 
-Given('user is on the transfer page', async function () {
-  await ensureAuthenticated(this);
-  await getTransferFlow(this).openTransferPage();
-});
+Then(
+  'the transfer receipt shows {string} from {string} to {string}',
+  async function (this: V4World, amount: string, from: string, to: string) {
+    await expectTransferReceipt(this.page, amount, from, to);
+  },
+);
 
-When('user transfers {string} between accounts', async function (amount: string) {
-  await getTransferFlow(this).performTransfer(amount);
-});
-
-When('user transfers {string} from account {string} to account {string}', async function (
-  amount: string,
-  fromAccount: string,
-  toAccount: string
-) {
-  await getTransferFlow(this).performTransfer(amount, fromAccount, toAccount);
-});
-
-Then('transfer should be successful', async function () {
-  await expectTransferSuccess(this.page);
-});
-
-Then('transfer success message {string} should be displayed', async function (message: string) {
-  await expectTransferSuccess(this.page);
-  await expectTextContains(this.page.locator('body'), message);
-});
-
-When('user transfers {string} above balance', async function (amount: string) {
-  await getTransferFlow(this).performTransferExpectingError(amount);
-});
-
-Then('an error message should be shown', async function () {
-  await expectTransferError(this.page);
-});
-
-Then('transfer should fail with message {string}', async function (message: string) {
-  await expectTransferError(this.page);
-  await expectTextContains(this.page.locator('body'), message);
+Then('the transfer form shows {string}', async function (this: V4World, message: string) {
+  await expect(this.page.locator('#showForm').getByText(message, { exact: true })).toBeVisible();
 });

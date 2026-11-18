@@ -1,0 +1,31 @@
+Given I have both checking and savings accounts
+Then I should see all account types displayed correctly
+Then checking accounts should be clearly labeled
+Then savings accounts should be clearly labeled
+Then account type icons should be visible and correct
+Then accounts should be grouped or sorted logically
+Then each account type should show appropriate features
+When I click on first account number link
+Then I should navigate to account details page
+When I return to accounts overview
+When I click on account activity link
+Then I should see transaction history for that account
+Then navigation should work consistently for all accounts
+Then page state should be preserved correctly
+Given I have accounts with known balances
+When I note current account balances
+When I refresh the page
+Then account balances should remain consistent
+Then page should load without errors
+Then all account information should be preserved
+When I navigate away and return to overview
+Then all account data should still be accurate
+Then page performance should be acceptable
+Given I have multiple accounts with different balances
+Then each account number should be unique and valid
+Then account balances should match transaction totals
+Then available amounts should not exceed actual balances
+Then negative balances should be clearly indicated with proper formatting
+Then currency symbols should be consistent across all accounts
+Then date information should be accurate and properly formatted
+Then no duplicate accounts should be displayed

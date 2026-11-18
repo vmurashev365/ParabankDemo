@@ -48,7 +48,7 @@ export class UpdateProfilePage extends BasePage {
     return this.page.getByRole('button', { name: /update profile|update contact/i });
   }
 
-  async goto(path = 'https://parabank.parasoft.com/parabank/updateprofile.htm'): Promise<void> {
+  async goto(path = '/parabank/updateprofile.htm'): Promise<void> {
     await super.goto(path);
   }
 

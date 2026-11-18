@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { RegistrationFormComponent } from '../components/RegistrationFormComponent';
 
@@ -24,55 +24,7 @@ export class RegisterPage extends BasePage {
     this.formComponent = new RegistrationFormComponent(page, page.locator('form[action*="register"]'));
   }
 
-  get firstNameInput(): Locator {
-    return this.formComponent.firstNameInput;
-  }
-
-  get lastNameInput(): Locator {
-    return this.formComponent.lastNameInput;
-  }
-
-  get addressInput(): Locator {
-    return this.page.getByLabel(/address/i);
-  }
-
-  get cityInput(): Locator {
-    return this.page.getByLabel(/city/i);
-  }
-
-  get stateInput(): Locator {
-    return this.page.getByLabel(/state/i);
-  }
-
-  get zipCodeInput(): Locator {
-    return this.page.getByLabel(/zip code/i);
-  }
-
-  get phoneInput(): Locator {
-    return this.page.getByLabel(/phone/i);
-  }
-
-  get ssnInput(): Locator {
-    return this.page.getByLabel(/ssn/i);
-  }
-
-  get usernameInput(): Locator {
-    return this.page.getByLabel(/username/i);
-  }
-
-  get passwordInput(): Locator {
-    return this.page.getByLabel(/^password$/i);
-  }
-
-  get confirmPasswordInput(): Locator {
-    return this.page.getByLabel(/confirm password/i);
-  }
-
-  get registerButton(): Locator {
-    return this.formComponent.submitButton;
-  }
-
-  async goto(path = 'https://parabank.parasoft.com/parabank/register.htm'): Promise<void> {
+  async goto(path = '/parabank/register.htm'): Promise<void> {
     await super.goto(path);
   }
 

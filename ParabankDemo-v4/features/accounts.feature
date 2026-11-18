@@ -14,7 +14,6 @@ Feature: Account Visibility and Navigation
 
   @regression @validation
   Scenario: Account list shows at least one entry
-    When user lists all account summaries
     Then user should see at least 1 accounts listed
 
   @regression @accounts

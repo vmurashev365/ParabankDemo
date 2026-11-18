@@ -1,14 +1,9 @@
-import type { Page } from '@playwright/test';
-import { expect } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
-export async function expectTransferSuccess(page: Page): Promise<void> {
-  const successBanner = page.getByText(/transfer complete/i);
-  await expect(successBanner).toBeVisible();
-}
-
-export async function expectTransferError(page: Page): Promise<void> {
-  // For negative transfers (exceeds balance), ParaBank typically shows validation messages or keeps the result hidden.
-  // For now, assert that the transfer completion banner is not visible.
-  const successBanner = page.getByText(/transfer complete/i);
-  await expect(successBanner).not.toBeVisible();
+export async function expectTransferReceipt(page: Page, amount: string, from: string, to: string): Promise<void> {
+  const receipt = page.locator('#showResult');
+  await expect(receipt.getByRole('heading', { name: 'Transfer Complete!' })).toBeVisible();
+  await expect(receipt.locator('#amountResult')).toHaveText(`$${Number(amount).toFixed(2)}`);
+  await expect(receipt.locator('#fromAccountIdResult')).toHaveText(from);
+  await expect(receipt.locator('#toAccountIdResult')).toHaveText(to);
 }

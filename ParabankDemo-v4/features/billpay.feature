@@ -15,7 +15,7 @@ Feature: Bill Payment Workflows
       | account       | 445566           |
       | verifyaccount | 445566           |
       | amount        | 75.50            |
-      | fromaccount   | 13344            |
+      | fromaccount   | 54321            |
     Then bill payment should be successful
 
   @regression @billpay
@@ -34,7 +34,7 @@ Feature: Bill Payment Workflows
     Then bill payment should be successful
 
   @regression @negative @billpay
-  Scenario: Bill payment fails when required data is incomplete
+  Scenario: Bill payment requires an amount
     When user pays a bill with the following details:
       | name          | Cable Provider |
       | address       | 1 Fiber Way    |
@@ -43,10 +43,10 @@ Feature: Bill Payment Workflows
       | zipcode       | 07001          |
       | phone         | 5551112233     |
       | account       | 998877         |
-      | verifyaccount | 001122         |
+      | verifyaccount | 998877         |
       | amount        |                |
       | fromaccount   | 13344          |
-    Then bill payment should fail
+    Then bill payment should fail with message "The amount cannot be empty."
 
   @regression @negative @billpay
   Scenario: Bill payment fails when payee name is missing
@@ -59,6 +59,21 @@ Feature: Bill Payment Workflows
       | phone         | 5552223344     |
       | account       | 333222         |
       | verifyaccount | 333222         |
-      | amount        |                |
+      | amount        | 15.00          |
       | fromaccount   | 13344          |
-    Then bill payment should fail
+    Then bill payment should fail with message "Payee name is required."
+
+  @regression @negative @billpay
+  Scenario: A mismatched payee account confirmation leaves the customer's balance unchanged
+    Given user opens the accounts overview
+    And the customer records the balance of account "13344"
+    When user navigates to the "Bill Pay" page via the navbar
+    And user pays a bill with the following details:
+      | name          | Water Utility |
+      | account       | 445566        |
+      | verifyaccount | 445567        |
+      | amount        | 19.99         |
+      | fromaccount   | 13344         |
+    Then bill payment should fail with message "The account numbers do not match."
+    When user returns to the accounts overview
+    Then account "13344" has a balance change of "0.00" USD

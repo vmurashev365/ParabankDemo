@@ -1,40 +1,24 @@
-# ParabankDemo v4 Coding Standards
+# Writing a banking scenario
 
-## Page Object Model (POM)
+Start with the customer action and its observable outcome. In a monetary scenario, name the amount and accounts. A transfer receipt identifies the payment. Checking both balances establishes that the debit and credit reached the accounts.
 
-- Each page class extends `BasePage`, owns only its page-specific actions, and exposes typed locator getters for reuse.
-- Keep page methods action-oriented (navigate, fill, click); push validation logic into `src/assertions`.
-- Share no state between page objects other than the injected Playwright `Page` instance.
+## Where code belongs
 
-## Components
+| Location | Responsibility |
+| --- | --- |
+| `features/` | Business rules, named examples, setup and expected outcomes |
+| `src/steps/` | Translate Gherkin into typed page actions and assertions |
+| `src/pages/` and `src/components/` | Own each locator in one place. Scope controls to their form or table. |
+| `src/assertions/` | Compare visible receipts and validation messages with the expected values |
+| `src/support/` | Scenario World, browser lifecycle and currency conversion |
 
-- Components extend `BaseComponent`, encapsulate DOM fragments (navbar, forms, banners), and expose high-level actions such as `submit()` or `logout()`.
-- Component constructors should receive a root locator; avoid querying the global page directly from within component methods unless absolutely necessary.
+Use `function (this: V4World, ...)` for step callbacks. Keep scenario-specific data, such as opening balances, on the World. Navigation belongs in an explicit step. A form submission operates on the page already open.
 
-## Flows
+## Banking examples
 
-- Flows extend `BaseFlow` and orchestrate page/component calls to express a business intent (login, transfer, registration).
-- Flows must not introduce raw locators; they strictly compose existing page/component APIs for clarity and reuse.
+- Capture opening balances before the transfer. Compare the closing balance of each account with its own opening balance plus the signed change in integer cents.
+- Identify receipts by their amount and account numbers. On a bill payment, also verify the named payee.
+- In a validation test, invalidate one input at a time. Assert the visible field message. When the expected outcome includes no posting, check the original balance again.
+- Use the controlled instance and synthetic test data. The shared customer requires serial execution for balance comparisons.
 
-## Step Definitions
-
-- Steps stay declarative (1–3 lines) and only invoke flows or assertion helpers.
-- Do not import Playwright locators or manipulate `page` directly; rely on the shared abstractions for navigation and actions.
-
-## Locator Strategy
-
-- Prefer Playwright’s semantic helpers: `getByRole`, `getByLabel`, `getByTestId`, and `getByText` (in that order).
-- Avoid XPath altogether—ESLint warns when `page.locator('//...')` is detected; replace with accessible locators or component test IDs.
-- Use `locatorHeuristics.ts` helpers to suggest consistent `data-testid` values when the DOM lacks accessible hooks.
-
-## Naming Conventions
-
-- Classes and enums: `PascalCase` (e.g., `LoginPage`, `TransferFlow`).
-- Methods, properties, variables: `camelCase` (e.g., `loginWithCredentials`).
-- Constants and environment keys: `UPPER_SNAKE_CASE`.
-- Test IDs: kebab-case derived via `suggestTestId` (`login-form-username`).
-
-## Tooling & Formatting
-
-- ESLint enforces no implicit `any`, no unused variables, `prefer-const`, and limits files to 400 lines; fix warnings before committing.
-- Prettier formats the codebase (2 spaces, 120 columns, single quotes, trailing commas on all multi-line structures); run it on save or via npm scripts.
+Run `npm run type-check`, `npm run lint` and `npm run format:check` before the relevant Cucumber selection. The smoke suite uses the same naming and tooling conventions as the Moodle and Logistics portfolio projects.
