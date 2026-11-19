@@ -6,6 +6,8 @@ Feature: End-to-end Regression Journeys
     When user logs in with default credentials
     Then user should be logged in successfully
     And accounts overview should be visible
+    And the customer records the balance of account "<fromAccount>"
+    And the customer records the balance of account "<toAccount>"
     When user navigates to the "Transfer Funds" page via the navbar
     And user transfers "<transferAmount>" from account "<fromAccount>" to account "<toAccount>"
     Then the transfer receipt shows "<transferAmount>" from "<fromAccount>" to "<toAccount>"
@@ -24,12 +26,16 @@ Feature: End-to-end Regression Journeys
     Then bill payment should be successful
     When user navigates to the "Accounts Overview" page via the navbar
     Then accounts overview should be visible
+    And account "<fromAccount>" has a balance change of "<expectedFromDelta>" USD
+    And account "<toAccount>" has a balance change of "<expectedToDelta>" USD
+    And the banking API balance of account "<fromAccount>" matches the UI balance
+    And the banking API balance of account "<toAccount>" matches the UI balance
     When user logs out via the navbar
     Then user should see the login page again
 
     Examples: Pay the bill from the account that received the transfer
-      | fromAccount | toAccount | transferAmount | billAmount | payeeAccount |
-      | 54321       | 13344     | 25.00          | 40.00      | 223344       |
+      | fromAccount | toAccount | transferAmount | billAmount | payeeAccount | expectedFromDelta | expectedToDelta |
+      | 54321       | 13344     | 25.00          | 40.00      | 223344       | -25.00            | -15.00          |
 
   @regression @registration
   Scenario: Registration validation prevents mismatched passwords

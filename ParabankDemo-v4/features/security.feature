@@ -5,13 +5,13 @@ Feature: Authentication Security Controls
 
   @security @regression
   Scenario Outline: SQL payloads are rejected
-    When user attempts to login with username "<payload>" and password "<password>"
+    When user attempts to login with password "<password>" and raw username: <payload>
     Then user should remain on the login page
 
     Examples:
       | payload                          | password |
       | ' OR '1'='1                      | demo     |
-      | " OR "1"="1"                  | demo     |
+      | " OR "1"="1"                     | demo     |
       | admin' UNION SELECT * FROM users | any      |
 
   @browser_compatibility @regression

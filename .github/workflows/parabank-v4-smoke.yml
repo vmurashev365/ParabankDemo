@@ -1,4 +1,4 @@
-name: ParaBank banking smoke
+name: ParaBank banking suite
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ on:
       - '.github/workflows/parabank-v4-smoke.yml'
 
 jobs:
-  smoke:
+  verify:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,14 +28,23 @@ jobs:
       - run: npm run type-check
       - run: npm run lint
       - run: npm run format:check
+      - run: npm run test:unit
+      - run: npm run test:dry-run
       - run: npx playwright install --with-deps chromium
       - run: npm run docker:start
-      - name: Wait for the login page
+      - name: Wait for ParaBank readiness
         run: curl --fail --silent --show-error --retry 30 --retry-all-errors --retry-delay 2 http://127.0.0.1:8081/parabank/index.htm --output /dev/null
-      - run: npm run test:smoke
+      - name: Run REST API suite (no browser)
+        run: npm run test:api -- --format html:reports/cucumber/api-report.html
+      - name: Run UI + API smoke suite
+        run: npm run test:smoke -- --format html:reports/cucumber/smoke-report.html
+      - name: Run regression and security suite
+        run: npm run test:regression -- --format html:reports/cucumber/regression-report.html
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: parabank-smoke-report
-          path: ParabankDemo-v4/reports/cucumber/report.html
+          name: parabank-v4-reports
+          path: |
+            ParabankDemo-v4/reports/cucumber/*.html
+            ParabankDemo-v4/reports/traces/*.zip
           if-no-files-found: warn

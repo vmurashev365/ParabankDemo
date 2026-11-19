@@ -45,6 +45,7 @@ Then(
     if (before === undefined) throw new Error(`Record the opening balance of account ${account} first.`);
     const expectedClosing = before + usdToCents(change);
     const actualClosing = await this.accounts.balanceInCents(account);
+    this.balancesAfter.set(account, actualClosing);
     await this.attach(
       JSON.stringify({ account, unit: 'USD cents', opening: before, expectedClosing, actualClosing }, null, 2),
       'application/json',

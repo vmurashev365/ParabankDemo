@@ -36,6 +36,13 @@ When(
   },
 );
 
+When(
+  /^user attempts to login with password "([^"]*)" and raw username: (.+)$/,
+  async function (this: V4World, password: string, rawUsername: string) {
+    await this.login.login(rawUsername, password);
+  },
+);
+
 Then('user should be logged in successfully', async function (this: V4World) {
   await expect(this.navbar.logoutLink).toBeVisible();
 });
